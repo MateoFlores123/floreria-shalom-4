@@ -1,0 +1,232 @@
+/* ==========================================================
+   HERO MOSAIC — 6 piezas, tamaños distintos, ninguna diminuta
+   Usa el prefijo .hero-mosaic, así que NO choca con el CSS viejo
+   de .home-bento-hero (que ya no se usa y puedes borrar).
+   ========================================================== */
+
+.hero-mosaic {
+  padding: clamp(16px, 2.5vw, 32px) 0 clamp(24px, 4vw, 48px);
+  /* Color del velo sobre la foto del recuadro de texto (R, G, B) */
+  --mosaic-veil: 255, 251, 247;
+}
+
+.hero-mosaic__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  /* Cada fila mide entre 200px y 250px según el ancho de pantalla */
+  grid-auto-rows: minmax(clamp(200px, 20vw, 250px), auto);
+  gap: 16px;
+}
+
+.hero-mosaic__grid > * {
+  min-width: 0;
+}
+
+/* Base común de todas las piezas */
+.hero-mosaic__intro,
+.hero-mosaic__main-media,
+.hero-mosaic__tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #efe6dd; /* color mientras carga la imagen */
+  isolation: isolate;
+}
+
+.hero-mosaic__image,
+.hero-mosaic__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-mosaic__image {
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.hero-mosaic__fallback {
+  background: linear-gradient(135deg, #e9d9cc, #d8c2b2);
+}
+
+/* ---------- Escritorio: 2 bandas ----------
+   Banda superior (2 filas):  texto 5 | favoritos 4 | flores 3
+   Banda inferior (1 fila):   combos 4 | detalles 5 | temporada 3 */
+.hero-mosaic__intro           { grid-column: 1 / span 5;  grid-row: 1 / span 2; }
+.hero-mosaic__main-media      { grid-column: 6 / span 4;  grid-row: 1 / span 2; }
+.hero-mosaic__tile--flores    { grid-column: 10 / span 3; grid-row: 1 / span 2; }
+.hero-mosaic__tile--combos    { grid-column: 1 / span 4;  grid-row: 3; }
+.hero-mosaic__tile--detalles  { grid-column: 5 / span 5;  grid-row: 3; }
+.hero-mosaic__tile--temporada { grid-column: 10 / span 3; grid-row: 3; }
+
+/* ---------- Recuadro de texto con foto de fondo ----------
+   El velo es fuerte a la izquierda (donde va el texto) y se desvanece
+   hacia la derecha para que la foto se vea. Ajusta los tres números. */
+.hero-mosaic__intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--mosaic-veil), 0.86) 0%,
+    rgba(var(--mosaic-veil), 0.6) 55%,
+    rgba(var(--mosaic-veil), 0) 100%
+  );
+}
+
+.hero-mosaic__intro-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  padding: clamp(24px, 3vw, 40px);
+}
+
+.hero-mosaic__intro-content h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.1vw, 2.9rem);
+  line-height: 1.05;
+  overflow-wrap: break-word;
+}
+
+.hero-mosaic__intro-content p {
+  margin: 0;
+  max-width: 40ch;
+}
+
+.hero-mosaic__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.hero-mosaic__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 0.85rem;
+}
+
+/* ---------- Texto sobre las fotos ---------- */
+.hero-mosaic__main-media,
+.hero-mosaic__tile {
+  display: block;
+  text-decoration: none;
+}
+
+.hero-mosaic__media-copy,
+.hero-mosaic__tile-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 64px 20px 20px;
+  color: #fff;
+  background: linear-gradient(to top, rgba(24, 16, 12, 0.78), rgba(24, 16, 12, 0));
+}
+
+.hero-mosaic__media-copy span,
+.hero-mosaic__media-copy strong,
+.hero-mosaic__tile-copy span,
+.hero-mosaic__tile-copy strong {
+  color: inherit;
+}
+
+.hero-mosaic__media-copy span,
+.hero-mosaic__tile-copy span {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  opacity: 0.92;
+}
+
+.hero-mosaic__tile-copy strong {
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.hero-mosaic__media-copy strong {
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  line-height: 1.15;
+}
+
+/* ---------- Interacción ---------- */
+.hero-mosaic__main-media:hover .hero-mosaic__image,
+.hero-mosaic__tile:hover .hero-mosaic__image {
+  transform: scale(1.04);
+}
+
+.hero-mosaic__main-media:focus-visible,
+.hero-mosaic__tile:focus-visible {
+  outline: 3px solid #1a1a1a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mosaic__image { transition: none; }
+  .hero-mosaic__main-media:hover .hero-mosaic__image,
+  .hero-mosaic__tile:hover .hero-mosaic__image { transform: none; }
+}
+
+/* ---------- Tablet: 6 columnas ----------
+   Texto a todo el ancho, favoritos grande y 4 tarjetas en 2 x 2 */
+@media (max-width: 1080px) {
+  .hero-mosaic__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: minmax(240px, auto);
+  }
+
+  .hero-mosaic__intro,
+  .hero-mosaic__main-media,
+  .hero-mosaic__tile--flores,
+  .hero-mosaic__tile--combos,
+  .hero-mosaic__tile--detalles,
+  .hero-mosaic__tile--temporada {
+    grid-row: auto;
+  }
+
+  .hero-mosaic__intro      { grid-column: 1 / -1; }
+  .hero-mosaic__main-media { grid-column: 1 / -1; min-height: 380px; }
+
+  .hero-mosaic__tile--flores,
+  .hero-mosaic__tile--combos,
+  .hero-mosaic__tile--detalles,
+  .hero-mosaic__tile--temporada {
+    grid-column: span 3;
+  }
+}
+
+/* ---------- Móvil: tarjetas en 2 columnas ---------- */
+@media (max-width: 640px) {
+  .hero-mosaic__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(210px, auto);
+    gap: 12px;
+  }
+
+  .hero-mosaic__intro,
+  .hero-mosaic__main-media { grid-column: 1 / -1; }
+  .hero-mosaic__main-media { min-height: 340px; }
+
+  .hero-mosaic__tile--flores,
+  .hero-mosaic__tile--combos,
+  .hero-mosaic__tile--detalles,
+  .hero-mosaic__tile--temporada {
+    grid-column: span 1;
+  }
+
+  .hero-mosaic__tile-copy { padding: 40px 14px 14px; }
+  .hero-mosaic__tile-copy strong { font-size: 0.95rem; }
+}
