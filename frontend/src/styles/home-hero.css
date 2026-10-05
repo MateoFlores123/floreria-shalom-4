@@ -1,232 +1,537 @@
 /* ==========================================================
-   HERO MOSAIC — 6 piezas, tamaños distintos, ninguna diminuta
-   Usa el prefijo .hero-mosaic, así que NO choca con el CSS viejo
-   de .home-bento-hero (que ya no se usa y puedes borrar).
+   HERO "BLOOM" — siluetas florales con alturas escalonadas
+   Arco · hoja · cápsula · óvalo · pétalo + sello giratorio.
+   Todo usa el prefijo .bloom para no chocar con otros estilos.
    ========================================================== */
 
-.hero-mosaic {
-  padding: clamp(16px, 2.5vw, 32px) 0 clamp(24px, 4vw, 48px);
-  /* Color del velo sobre la foto del recuadro de texto (R, G, B) */
-  --mosaic-veil: 255, 251, 247;
-}
-
-.hero-mosaic__grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  /* Cada fila mide entre 200px y 250px según el ancho de pantalla */
-  grid-auto-rows: minmax(clamp(200px, 20vw, 250px), auto);
-  gap: 16px;
-}
-
-.hero-mosaic__grid > * {
-  min-width: 0;
-}
-
-/* Base común de todas las piezas */
-.hero-mosaic__intro,
-.hero-mosaic__main-media,
-.hero-mosaic__tile {
+.bloom {
+  --bloom-ink: #1d1a19;
+  --bloom-rose: #be6981;
+  --bloom-blush: #f3dfe3;
+  --bloom-sand: #efe6dd;
+  --bloom-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --mx: 0;
+  --my: 0;
   position: relative;
   overflow: hidden;
-  border-radius: 22px;
-  background: #efe6dd; /* color mientras carga la imagen */
-  isolation: isolate;
+  padding: clamp(14px, 2vw, 26px) 0 clamp(28px, 4vw, 56px);
 }
 
-.hero-mosaic__image,
-.hero-mosaic__fallback {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.hero-mosaic__image {
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-.hero-mosaic__fallback {
-  background: linear-gradient(135deg, #e9d9cc, #d8c2b2);
-}
-
-/* ---------- Escritorio: 2 bandas ----------
-   Banda superior (2 filas):  texto 5 | favoritos 4 | flores 3
-   Banda inferior (1 fila):   combos 4 | detalles 5 | temporada 3 */
-.hero-mosaic__intro           { grid-column: 1 / span 5;  grid-row: 1 / span 2; }
-.hero-mosaic__main-media      { grid-column: 6 / span 4;  grid-row: 1 / span 2; }
-.hero-mosaic__tile--flores    { grid-column: 10 / span 3; grid-row: 1 / span 2; }
-.hero-mosaic__tile--combos    { grid-column: 1 / span 4;  grid-row: 3; }
-.hero-mosaic__tile--detalles  { grid-column: 5 / span 5;  grid-row: 3; }
-.hero-mosaic__tile--temporada { grid-column: 10 / span 3; grid-row: 3; }
-
-/* ---------- Recuadro de texto con foto de fondo ----------
-   El velo es fuerte a la izquierda (donde va el texto) y se desvanece
-   hacia la derecha para que la foto se vea. Ajusta los tres números. */
-.hero-mosaic__intro::after {
+/* Halo suave detrás de las piezas */
+.bloom::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 1;
+  z-index: -1;
+  width: 62vw;
+  height: 62vw;
+  max-width: 980px;
+  max-height: 980px;
+  right: -12vw;
+  top: -22vw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(243, 223, 227, 0.85), rgba(243, 223, 227, 0));
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(var(--mosaic-veil), 0.86) 0%,
-    rgba(var(--mosaic-veil), 0.6) 55%,
-    rgba(var(--mosaic-veil), 0) 100%
-  );
 }
 
-.hero-mosaic__intro-content {
+.bloom__wrap {
+  width: 100%;
+  max-width: 1520px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 3vw, 44px);
+}
+
+/* ---------- Escritorio: 4 columnas, 12 filas ----------
+   [ texto    ][          ][ hoja   ][         ]
+   [          ][   ARCO   ][        ][ cápsula ]
+   [ ◉ sello  ][  (alto)  ][ óvalo  ][ (baja)  ]
+   [ pétalo   ][          ][        ][         ]            */
+.bloom__grid {
   position: relative;
-  z-index: 2;
-  height: 100%;
+  display: grid;
+  grid-template-columns: 1.45fr 1.1fr 0.85fr 0.62fr;
+  grid-template-rows: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+  height: clamp(660px, calc(100svh - 124px), 900px);
+}
+
+.bloom__intro            { grid-column: 1; grid-row: 1 / 9; }
+.bloom__piece--detalles  { grid-column: 1; grid-row: 9 / 13; }
+.bloom__piece--favorites { grid-column: 2; grid-row: 1 / 13; }
+.bloom__piece--flores    { grid-column: 3; grid-row: 1 / 8; }
+.bloom__piece--combos    { grid-column: 3; grid-row: 8 / 13; }
+.bloom__piece--temporada { grid-column: 4; grid-row: 3 / 13; }
+
+/* ---------- Texto ---------- */
+.bloom__intro {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  gap: 16px;
-  padding: clamp(24px, 3vw, 40px);
+  gap: clamp(14px, 1.8vw, 22px);
+  padding-right: clamp(4px, 2vw, 28px);
+  min-width: 0;
 }
 
-.hero-mosaic__intro-content h1 {
+.bloom__kicker {
   margin: 0;
-  font-size: clamp(1.9rem, 3.1vw, 2.9rem);
-  line-height: 1.05;
-  overflow-wrap: break-word;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--bloom-rose);
+  font-size: 0.92rem;
+  font-weight: 600;
 }
 
-.hero-mosaic__intro-content p {
+.bloom__kicker::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left;
+  animation: bloom-line 1s var(--bloom-ease) 0.15s backwards;
+}
+
+.bloom__title {
+  margin: 0;
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-weight: 500;
+  font-size: clamp(2.8rem, 3.9vw, 4.7rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--bloom-ink);
+}
+
+.bloom__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.bloom__line > span {
+  display: inline-block;
+  animation: bloom-rise 1.1s var(--bloom-ease) backwards;
+}
+
+.bloom__line:nth-child(1) > span { animation-delay: 0.2s; }
+.bloom__line:nth-child(2) > span { animation-delay: 0.32s; }
+
+.bloom__lead {
   margin: 0;
   max-width: 40ch;
+  color: #5d5753;
+  font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+  line-height: 1.6;
+  animation: bloom-fade 1s var(--bloom-ease) 0.5s backwards;
 }
 
-.hero-mosaic__actions {
+.bloom__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 20px;
+  gap: 14px 24px;
+  animation: bloom-fade 1s var(--bloom-ease) 0.62s backwards;
 }
 
-.hero-mosaic__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  font-size: 0.85rem;
+.bloom__cta {
+  padding: 15px 26px;
+  border-radius: 999px;
 }
 
-/* ---------- Texto sobre las fotos ---------- */
-.hero-mosaic__main-media,
-.hero-mosaic__tile {
-  display: block;
-  text-decoration: none;
+.bloom__cta svg { transition: transform 0.35s var(--bloom-ease); }
+.bloom__cta:hover svg { transform: translateX(4px); }
+
+.bloom__link {
+  position: relative;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--bloom-ink);
+  padding-bottom: 4px;
 }
 
-.hero-mosaic__media-copy,
-.hero-mosaic__tile-copy {
+.bloom__link::after {
+  content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform 0.45s var(--bloom-ease);
+}
+
+.bloom__link:hover { color: var(--bloom-rose); }
+.bloom__link:hover::after { transform: scaleX(0.35); }
+
+.bloom__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.86rem;
+  color: #5d5753;
+  animation: bloom-fade 1s var(--bloom-ease) 0.74s backwards;
+}
+
+.bloom__steps b {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 6px;
+  border: 1px solid rgba(29, 26, 25, 0.25);
+  border-radius: 50%;
+  font-size: 0.72rem;
+  color: var(--bloom-ink);
+}
+
+/* ---------- Piezas con silueta ---------- */
+.bloom__piece {
+  position: relative;
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  container-type: inline-size;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.7s var(--bloom-ease), filter 0.7s var(--bloom-ease);
+  animation: bloom-grow 1.25s var(--bloom-ease) backwards;
+  animation-delay: calc(0.28s + var(--i) * 0.13s);
+}
+
+.bloom__frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bloom-sand);
+  box-shadow: 0 24px 60px -28px rgba(60, 30, 36, 0.35);
+  transition: border-radius 0.8s var(--bloom-ease), box-shadow 0.7s var(--bloom-ease);
+}
+
+/* Las siluetas usan unidades del contenedor (cqi) para escalar con cada pieza */
+.bloom__shape--arch    .bloom__frame { border-radius: 50cqi 50cqi 30px 30px; }
+.bloom__shape--capsule .bloom__frame { border-radius: 50cqi; }
+.bloom__shape--leaf    .bloom__frame { border-radius: 46cqi 22px 46cqi 22px; }
+.bloom__shape--oval    .bloom__frame { border-radius: 50%; }
+.bloom__shape--petal   .bloom__frame { border-radius: 34cqi 26px 34cqi 26px; }
+
+/* Velo inferior para que el texto se lea */
+.bloom__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(28, 16, 18, 0.72) 0%, rgba(28, 16, 18, 0.18) 38%, rgba(28, 16, 18, 0) 60%);
+  transition: opacity 0.6s var(--bloom-ease);
+}
+
+.bloom__img,
+.bloom__fallback {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+}
+
+.bloom__img {
+  object-fit: cover;
+  scale: 1.04;
+  translate: calc(var(--mx) * var(--depth, 12) * -1px) calc(var(--my) * var(--depth, 12) * -1px);
+  transition: scale 1.1s var(--bloom-ease);
+  animation: bloom-zoom 1.8s var(--bloom-ease) backwards;
+  animation-delay: calc(0.28s + var(--i, 0) * 0.13s);
+  user-select: none;
+}
+
+.bloom__fallback {
+  background: linear-gradient(150deg, #f1e3dc, #e2c9c4);
+}
+
+.bloom__piece--detalles .bloom__img { object-position: 50% 62%; }
+.bloom__piece--flores .bloom__img { object-position: 50% 35%; }
+
+/* Texto sobre la foto */
+.bloom__caption {
+  position: absolute;
   z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 64px 20px 20px;
+  padding: 22px 24px;
+  pointer-events: none;
+}
+
+.bloom__caption strong {
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-weight: 600;
+  font-size: clamp(1.25rem, 1.55vw, 1.6rem);
+  line-height: 1.05;
   color: #fff;
-  background: linear-gradient(to top, rgba(24, 16, 12, 0.78), rgba(24, 16, 12, 0));
+  max-width: 16ch;
 }
 
-.hero-mosaic__media-copy span,
-.hero-mosaic__media-copy strong,
-.hero-mosaic__tile-copy span,
-.hero-mosaic__tile-copy strong {
-  color: inherit;
+.bloom__piece--favorites .bloom__caption strong {
+  font-size: clamp(1.7rem, 2.3vw, 2.4rem);
 }
 
-.hero-mosaic__media-copy span,
-.hero-mosaic__tile-copy span {
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  opacity: 0.92;
+.bloom__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.86);
 }
 
-.hero-mosaic__tile-copy strong {
-  font-size: 1.05rem;
-  line-height: 1.25;
+.bloom__label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50% 0 50% 0;
+  background: #f6c9d2;
 }
 
-.hero-mosaic__media-copy strong {
-  font-size: clamp(1.4rem, 2.2vw, 2rem);
-  line-height: 1.15;
+.bloom__go {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--bloom-ink);
+  opacity: 0;
+  transform: translateY(10px) scale(0.8);
+  transition: opacity 0.45s var(--bloom-ease), transform 0.45s var(--bloom-ease);
 }
+
+.bloom__shape--oval .bloom__frame::after {
+  background: radial-gradient(ellipse at 50% 75%, rgba(28, 16, 18, 0.7), rgba(28, 16, 18, 0.15) 70%);
+}
+
+/* Formas redondeadas abajo: el texto va centrado y más arriba */
+.bloom__shape--capsule .bloom__caption,
+.bloom__shape--oval .bloom__caption {
+  align-items: center;
+  text-align: center;
+  padding-bottom: calc(16cqi + 10px);
+}
+
+.bloom__shape--capsule .bloom__go,
+.bloom__shape--oval .bloom__go {
+  position: static;
+  margin-top: 8px;
+}
+
+.bloom__shape--capsule .bloom__caption strong,
+.bloom__shape--oval .bloom__caption strong { max-width: 12ch; }
+
+.bloom__shape--arch .bloom__caption { padding: 28px 28px 30px; }
 
 /* ---------- Interacción ---------- */
-.hero-mosaic__main-media:hover .hero-mosaic__image,
-.hero-mosaic__tile:hover .hero-mosaic__image {
-  transform: scale(1.04);
+.bloom__piece:hover,
+.bloom__piece:focus-visible {
+  transform: translateY(-8px);
 }
 
-.hero-mosaic__main-media:focus-visible,
-.hero-mosaic__tile:focus-visible {
-  outline: 3px solid #1a1a1a;
-  outline-offset: 3px;
+.bloom__piece:hover .bloom__frame,
+.bloom__piece:focus-visible .bloom__frame {
+  box-shadow: 0 40px 70px -30px rgba(60, 30, 36, 0.5);
+}
+
+.bloom__piece:hover .bloom__img,
+.bloom__piece:focus-visible .bloom__img { scale: 1.12; }
+
+.bloom__piece:hover .bloom__go,
+.bloom__piece:focus-visible .bloom__go {
+  opacity: 1;
+  transform: none;
+}
+
+/* Al pasar el mouse, la silueta "se abre" un poco */
+/* La hoja y el pétalo se suavizan; la esquina del texto se mantiene */
+.bloom__shape--leaf:hover .bloom__frame  { border-radius: 50cqi 50cqi 50cqi 22px; }
+.bloom__shape--petal:hover .bloom__frame { border-radius: 40cqi 40cqi 40cqi 26px; }
+.bloom__shape--arch:hover .bloom__frame  { border-radius: 50cqi 50cqi 50cqi 50cqi / 50cqi 50cqi 30px 30px; }
+
+.bloom__piece:focus-visible { outline: none; }
+.bloom__piece:focus-visible .bloom__frame {
+  outline: 3px solid var(--bloom-ink);
+  outline-offset: 4px;
+}
+
+/* ---------- Sello giratorio ---------- */
+.bloom__seal {
+  grid-column: 2;
+  grid-row: 8 / 10;
+  align-self: center;
+  justify-self: start;
+  position: relative;
+  z-index: 5;
+  width: clamp(124px, 10vw, 150px);
+  aspect-ratio: 1;
+  margin-left: calc(clamp(124px, 10vw, 150px) / -2 - 8px);
+  border-radius: 50%;
+  background: #fbf7f2;
+  box-shadow: 0 18px 40px -16px rgba(60, 30, 36, 0.45);
+  animation: bloom-seal-in 1.2s var(--bloom-ease) 1s backwards;
+  transition: transform 0.6s var(--bloom-ease);
+}
+
+.bloom__seal:hover { transform: scale(1.06) rotate(-6deg); }
+
+.bloom__seal-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: bloom-spin 26s linear infinite;
+}
+
+.bloom__seal-ring text {
+  font-family: "Work Sans", system-ui, sans-serif;
+  font-size: 13.4px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  fill: var(--bloom-ink);
+}
+
+.bloom__seal-photo {
+  position: absolute;
+  inset: 24%;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--bloom-blush);
+}
+
+.bloom__seal-photo .bloom__img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  scale: 1.15;
+  translate: none;
+  animation: none;
+}
+
+.bloom__seal:focus-visible {
+  outline: 3px solid var(--bloom-ink);
+  outline-offset: 4px;
+}
+
+/* ---------- Animaciones ---------- */
+@keyframes bloom-grow {
+  from {
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(60px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+@keyframes bloom-zoom {
+  from { scale: 1.32; }
+}
+
+@keyframes bloom-rise {
+  from { transform: translateY(110%); }
+}
+
+@keyframes bloom-fade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes bloom-line {
+  from { transform: scaleX(0); }
+}
+
+@keyframes bloom-seal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-90deg);
+  }
+}
+
+@keyframes bloom-spin {
+  to { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-mosaic__image { transition: none; }
-  .hero-mosaic__main-media:hover .hero-mosaic__image,
-  .hero-mosaic__tile:hover .hero-mosaic__image { transform: none; }
+  .bloom *,
+  .bloom *::before,
+  .bloom *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  .bloom__img { translate: none; }
 }
 
-/* ---------- Tablet: 6 columnas ----------
-   Texto a todo el ancho, favoritos grande y 4 tarjetas en 2 x 2 */
+/* ---------- Tablet ---------- */
 @media (max-width: 1080px) {
-  .hero-mosaic__grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    grid-auto-rows: minmax(240px, auto);
+  .bloom__grid {
+    grid-template-columns: 1.3fr 1fr 0.8fr;
+    grid-template-rows: auto;
+    grid-auto-rows: 54px;
+    height: auto;
   }
 
-  .hero-mosaic__intro,
-  .hero-mosaic__main-media,
-  .hero-mosaic__tile--flores,
-  .hero-mosaic__tile--combos,
-  .hero-mosaic__tile--detalles,
-  .hero-mosaic__tile--temporada {
-    grid-row: auto;
+  .bloom__intro            { grid-column: 1 / -1; grid-row: 1; padding: 12px 0 18px; }
+  .bloom__piece--favorites { grid-column: 1; grid-row: 2 / 12; }
+  .bloom__piece--flores    { grid-column: 2; grid-row: 2 / 8; }
+  .bloom__piece--temporada { grid-column: 3; grid-row: 3 / 12; }
+  .bloom__piece--combos    { grid-column: 2; grid-row: 8 / 12; }
+  .bloom__piece--detalles  { grid-column: 1 / -1; grid-row: 12 / 16; }
+
+  .bloom__seal {
+    grid-column: 1;
+    grid-row: 9 / 12;
+    justify-self: end;
+    margin: 0 -40px 0 0;
   }
 
-  .hero-mosaic__intro      { grid-column: 1 / -1; }
-  .hero-mosaic__main-media { grid-column: 1 / -1; min-height: 380px; }
-
-  .hero-mosaic__tile--flores,
-  .hero-mosaic__tile--combos,
-  .hero-mosaic__tile--detalles,
-  .hero-mosaic__tile--temporada {
-    grid-column: span 3;
-  }
+  .bloom__title { font-size: clamp(2.6rem, 7vw, 4rem); }
 }
 
-/* ---------- Móvil: tarjetas en 2 columnas ---------- */
+/* ---------- Móvil ---------- */
 @media (max-width: 640px) {
-  .hero-mosaic__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: minmax(210px, auto);
+  .bloom__grid {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 46px;
     gap: 12px;
   }
 
-  .hero-mosaic__intro,
-  .hero-mosaic__main-media { grid-column: 1 / -1; }
-  .hero-mosaic__main-media { min-height: 340px; }
+  .bloom__intro            { grid-column: 1 / -1; grid-row: 1; padding: 6px 0 10px; }
+  .bloom__piece--favorites { grid-column: 1 / -1; grid-row: 2 / 11; }
+  .bloom__piece--flores    { grid-column: 1; grid-row: 11 / 17; }
+  .bloom__piece--temporada { grid-column: 2; grid-row: 12 / 20; }
+  .bloom__piece--combos    { grid-column: 1; grid-row: 17 / 21; }
+  .bloom__piece--detalles  { grid-column: 1 / -1; grid-row: 21 / 25; }
 
-  .hero-mosaic__tile--flores,
-  .hero-mosaic__tile--combos,
-  .hero-mosaic__tile--detalles,
-  .hero-mosaic__tile--temporada {
-    grid-column: span 1;
+  .bloom__seal {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    align-self: start;
+    justify-self: end;
+    width: 104px;
+    margin: -14px -6px 0 0;
   }
 
-  .hero-mosaic__tile-copy { padding: 40px 14px 14px; }
-  .hero-mosaic__tile-copy strong { font-size: 0.95rem; }
+  .bloom__title { font-size: clamp(2.4rem, 11vw, 3.1rem); }
+  .bloom__caption { padding: 16px 16px; }
+  .bloom__caption strong { font-size: 1.15rem; }
+  .bloom__piece--favorites .bloom__caption strong { font-size: 1.7rem; }
+  .bloom__go { display: none; }
+  .bloom__shape--leaf .bloom__frame { border-radius: 40cqi 18px 40cqi 18px; }
+  .bloom__piece:hover { transform: none; }
 }

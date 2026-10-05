@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { BrandMark } from "./Brand";
 import { useCart } from "../context/CartContext";
 import { CloseIcon, PlusIcon, MinusIcon, TrashIcon } from "./icons";
 
@@ -27,8 +28,9 @@ export default function CartDrawer() {
         <div className="cart-drawer__items">
           {items.length === 0 && (
             <div className="empty-state">
+              <BrandMark className="empty-mark empty-mark--faded" />
               <p>Tu carrito está vacío por ahora.</p>
-              <p>Explora el catálogo y elige el arreglo perfecto 🌷</p>
+              <p>Explora el catálogo y elige el arreglo perfecto.</p>
             </div>
           )}
 

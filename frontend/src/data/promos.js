@@ -40,15 +40,17 @@ export const HERO_SLIDES = [
   },
 ];
 
-// Accesos rápidos por categoría (franja debajo del hero, tipo iconos).
+// Accesos rápidos por categoría (arcos debajo del hero).
+// "image" es la foto propia de la categoría; si aún no existe se usa "fallbackImage",
+// y si tampoco hay, se muestra el ícono.
 // "icon" hace referencia a los componentes exportados en components/icons.jsx.
 export const CATEGORY_SHORTCUTS = [
-  { label: "Ramos", icon: "bouquet", image: "/images/categories/ramos.webp", link: "/catalogo?categoria=Variadas" },
-  { label: "Rosas", icon: "heart", image: "/images/categories/rosas.webp", link: "/catalogo?categoria=Rosas" },
-  { label: "Cajas", icon: "gift", image: "/images/categories/cajas.webp", link: "/catalogo?categoria=Cajas" },
-  { label: "Box", icon: "box", image: "/images/categories/box.webp", link: "/catalogo?categoria=Box" },
+  { label: "Ramos", icon: "bouquet", image: "/images/categories/ramos.webp", fallbackImage: "/images/products/p004.webp", link: "/catalogo?categoria=Variadas" },
+  { label: "Rosas", icon: "heart", image: "/images/categories/rosas.webp", fallbackImage: "/images/products/p001.webp", link: "/catalogo?categoria=Rosas" },
+  { label: "Cajas", icon: "gift", image: "/images/categories/cajas.webp", fallbackImage: "/images/products/p002.webp", link: "/catalogo?categoria=Cajas" },
+  { label: "Box", icon: "box", image: "/images/categories/box.webp", fallbackImage: "/images/hero/hero-flores.webp", link: "/catalogo?categoria=Box" },
   { label: "Listones", icon: "ribbon", image: "/images/categories/listones.webp", link: "/catalogo?categoria=Listones" },
   { label: "Flores secas", icon: "dried", image: "/images/categories/flores-secas.webp", link: "/catalogo?categoria=Flores%20Secas" },
-  { label: "Combos", icon: "sparkle", image: "/images/categories/combos.webp", link: "/catalogo?categoria=Combos" },
+  { label: "Combos", icon: "sparkle", image: "/images/categories/combos.webp", fallbackImage: "/images/products/p006.webp", link: "/catalogo?categoria=Combos" },
   { label: "Condolencias", icon: "leaf", image: "/images/categories/condolencias.webp", link: "/catalogo?categoria=Condolencias" },
 ];

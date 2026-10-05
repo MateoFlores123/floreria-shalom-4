@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { SITE } from "../data/site";
 import { ArrowRightIcon, WhatsAppIcon } from "./icons";
-import { MEDIA } from "../data/media";
+import { BrandMark } from "./Brand";
 
 export default function Footer() {
   return (
@@ -34,14 +34,15 @@ export default function Footer() {
       <div className="footer-main">
         <div className="container footer-grid">
           <div className="footer-brand">
-            <div className="footer-logo-slot">
-              <img
-                src={MEDIA.brand.logo}
-                alt={SITE.brand}
-                onError={(event) => { event.currentTarget.style.display = "none"; }}
-              />
-              <span>LOGO DE FLORERÍA</span>
-            </div>
+            <Link to="/" className="footer-logo" aria-label={`${SITE.brand} — inicio`}>
+              <span className="footer-logo__badge">
+                <BrandMark />
+              </span>
+              <span className="footer-logo__name">
+                <strong>Florería Shalom</strong>
+                <small>Flores y detalles en Arequipa</small>
+              </span>
+            </Link>
             <p>
               Arreglos y ramos preparados con cuidado, con atención personalizada y entrega en
               Arequipa.

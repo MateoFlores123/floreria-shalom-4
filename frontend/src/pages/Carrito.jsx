@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { api } from "../api/client";
 import { AREQUIPA_DISTRICTS, DELIVERY_TIME_SLOTS } from "../data/site";
 import { PlusIcon, MinusIcon, TrashIcon, WhatsAppIcon } from "../components/icons";
+import { BrandMark } from "../components/Brand";
 
 const DELIVERY_FEE = 10;
 
@@ -75,6 +76,7 @@ export default function Carrito() {
     return (
       <div className="container center-max" style={{ paddingTop: 56, paddingBottom: 72 }}>
         <div className="card" style={{ textAlign: "center" }}>
+          <BrandMark className="success-mark" />
           <span className="badge">Pedido creado</span>
           <h1 style={{ marginTop: 16, fontSize: "1.8rem" }}>¡Ya casi está listo, {form.name.split(" ")[0]}!</h1>
           <p className="muted" style={{ marginTop: 12 }}>

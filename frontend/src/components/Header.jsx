@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { CartIcon, UserIcon, MenuIcon, CloseIcon } from "./icons";
+import { BrandMark } from "./Brand";
 
 const NAV_LINKS = [
   { to: "/", label: "Inicio" },
@@ -30,7 +31,10 @@ export default function Header() {
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       <div className="site-header__inner">
         <Link to="/" className="brand" aria-label="Floreria Shalom 4 — inicio">
-          <img src="/images/brand/logo.png" alt="Floreria Shalom 4" className="brand__logo" />
+          <BrandMark />
+          <span className="brand__name">
+            <strong>FloreríaShalom4</strong>
+          </span>
         </Link>
 
         <nav className="main-nav" aria-label="Navegación principal">

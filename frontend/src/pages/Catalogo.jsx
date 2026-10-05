@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 import ProductCard from "../components/ProductCard";
 import FloralOrnament from "../components/FloralOrnament";
+import { LogoLoader } from "../components/Brand";
 
 export default function Catalogo() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -95,7 +96,7 @@ export default function Catalogo() {
         )}
       </div>
 
-      {loading && <p className="muted">Cargando catálogo…</p>}
+      {loading && <LogoLoader label="Cargando catálogo…" />}
       {!loading && filtered.length === 0 && (
         <p className="muted">No encontramos productos con esos filtros. Prueba con otra búsqueda.</p>
       )}

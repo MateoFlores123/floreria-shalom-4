@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CartDrawer from "./components/CartDrawer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import { AmbientBackground, IntroSplash } from "./components/Brand";
 
 import Home from "./pages/Home";
 import Catalogo from "./pages/Catalogo";
@@ -18,6 +19,8 @@ export default function App() {
   const location = useLocation();
   return (
     <>
+      <AmbientBackground />
+      <IntroSplash />
       <Header />
       <CartDrawer />
       <main key={location.pathname} className="page-transition">
