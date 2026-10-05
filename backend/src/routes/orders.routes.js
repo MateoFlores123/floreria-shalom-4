@@ -12,7 +12,7 @@ const VALID_PAYMENT_STATUSES = ["Pendiente", "Pago aceptado", "Pago rechazado"];
 // para no despachar pedidos que no se han pagado (o cuyo pago fue rechazado).
 const STATUSES_REQUIRE_PAYMENT = ["En camino", "Entregado"];
 const DELIVERY_FEE = Number(process.env.DEFAULT_DELIVERY_FEE || 10);
-const OWNER_WHATSAPP_NUMBER = process.env.OWNER_WHATSAPP_NUMBER || "51900000000";
+const OWNER_WHATSAPP_NUMBER = process.env.OWNER_WHATSAPP_NUMBER || "51922522531";
 
 function generateOrderCode() {
   const random = crypto.randomInt(1000, 9999);

@@ -43,10 +43,18 @@ function buildOrderMessage(order) {
   return lines.join("\n");
 }
 
+// Deja el número listo para wa.me: solo dígitos y con el código de Perú (51).
+// Así funciona aunque en el .env o en Railway se escriba "922522531" o "+51 922 522 531".
+function normalizePhone(phoneNumber) {
+  const digits = String(phoneNumber || "").replace(/\D/g, "");
+  if (digits.length === 9 && digits.startsWith("9")) return `51${digits}`;
+  return digits;
+}
+
 function buildWhatsAppUrl(phoneNumber, order) {
   const message = buildOrderMessage(order);
   const encoded = encodeURIComponent(message);
-  return `https://wa.me/${phoneNumber}?text=${encoded}`;
+  return `https://wa.me/${normalizePhone(phoneNumber)}?text=${encoded}`;
 }
 
-module.exports = { buildOrderMessage, buildWhatsAppUrl, formatCurrency };
+module.exports = { buildOrderMessage, buildWhatsAppUrl, formatCurrency, normalizePhone };
