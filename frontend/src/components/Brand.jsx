@@ -100,7 +100,7 @@ export function IntroSplash() {
     <div className={`splash splash--${phase}`} aria-hidden="true" onClick={() => { document.documentElement.removeAttribute("data-splash"); setPhase("done"); }}>
       <div className="splash__inner">
         <BrandMark className="splash__mark" />
-        <p className="splash__name">Florería Shalom</p>
+        <p className="splash__name">FloreriaShalom</p>
       </div>
     </div>
   );

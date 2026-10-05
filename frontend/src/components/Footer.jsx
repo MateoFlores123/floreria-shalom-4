@@ -39,7 +39,7 @@ export default function Footer() {
                 <BrandMark />
               </span>
               <span className="footer-logo__name">
-                <strong>Florería Shalom</strong>
+                <strong>FloreríaShalom4</strong>
                 <small>Flores y detalles en Arequipa</small>
               </span>
             </Link>
