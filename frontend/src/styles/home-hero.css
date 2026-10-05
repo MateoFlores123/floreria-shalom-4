@@ -51,7 +51,7 @@
   grid-template-columns: 1.45fr 1.1fr 0.85fr 0.62fr;
   grid-template-rows: repeat(12, minmax(0, 1fr));
   gap: 16px;
-  height: clamp(660px, calc(100svh - 124px), 900px);
+  height: clamp(660px, calc(100svh - 140px), 900px);
 }
 
 .bloom__intro            { grid-column: 1; grid-row: 1 / 9; }
