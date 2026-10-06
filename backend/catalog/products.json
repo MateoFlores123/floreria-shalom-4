@@ -3,7 +3,7 @@
     "id": "p001",
     "name": "Ramo de 6 rosas",
     "categories": ["Rosas"],
-    "price": null,
+    "price": 25,
     "oldPrice": null,
     "color": "#B23A52",
     "description": "Seis rosas en un ramo sencillo y elegante, envuelto y listo para regalar.",
