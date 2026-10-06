@@ -1,5 +1,5 @@
 const express = require("express");
-const { getProducts } = require("../catalog");
+const { getProducts, inCategory } = require("../catalog");
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
   let products = getProducts().filter((p) => p.active !== false);
 
   if (category && category !== "Todas") {
-    products = products.filter((p) => p.category === category);
+    products = products.filter((p) => inCategory(p, category));
   }
   if (search) {
     const q = search.toLowerCase();
@@ -25,7 +25,11 @@ router.get("/", (req, res) => {
 // GET /api/products/categories
 router.get("/categories", (req, res) => {
   const products = getProducts().filter((p) => p.active !== false);
-  const categories = [...new Set(products.map((p) => p.category))];
+  // Orden: según aparecen las categorías principales en products.json
+  const categories = [...new Set([
+    ...products.map((p) => p.category),
+    ...products.flatMap((p) => p.categories),
+  ])];
   res.json(categories);
 });
 
