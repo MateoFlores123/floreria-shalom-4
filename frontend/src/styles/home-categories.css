@@ -47,7 +47,7 @@
 /* ---------- Fila de arcos ---------- */
 .cats__list {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(10, minmax(0, 1fr));
   gap: clamp(10px, 1.6vw, 22px);
   margin: 0;
   padding: 0 0 28px;
@@ -121,7 +121,7 @@
   font-size: clamp(1.05rem, 1.35vw, 1.3rem);
   line-height: 1.1;
   text-align: center;
-  white-space: nowrap;
+  text-wrap: balance;
 }
 
 .cats__label::after {
@@ -214,7 +214,7 @@
   display: inline-block;
   width: 7px;
   height: 7px;
-  margin: 0 18px;
+  margin: 0 14px;
   border-radius: 50% 0 50% 0;
   background: #e2b5bf;
   transform: translateY(-4px);
@@ -224,7 +224,7 @@
   position: relative;
   font-family: "Cormorant Garamond", "Times New Roman", serif;
   font-weight: 500;
-  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  font-size: clamp(1.25rem, 1.75vw, 1.7rem);
   line-height: 1.2;
   color: var(--cats-ink);
   transition: color 0.3s ease;

@@ -49,7 +49,7 @@ const PIECES = [
   {
     key: "temporada",
     shape: "capsule",
-    to: "/catalogo?categoria=Variadas",
+    to: "/catalogo?categoria=Girasoles",
     src: MEDIA.hero.temporada,
     alt: "Ramo de girasoles",
     label: "De estación",

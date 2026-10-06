@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const CartContext = createContext(null);
-const STORAGE_KEY = "halon4_cart";
+// v2: el catálogo cambió de ids, así que los carritos guardados antes se descartan
+const STORAGE_KEY = "shalom_cart_v2";
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
@@ -19,6 +20,8 @@ export function CartProvider({ children }) {
   }, [items]);
 
   function addItem(product, qty = 1) {
+    // Productos sin precio publicado se consultan por WhatsApp
+    if (!(typeof product.price === "number" && product.price > 0)) return;
     setItems((prev) => {
       const existing = prev.find((it) => it.productId === product.id);
       if (existing) {

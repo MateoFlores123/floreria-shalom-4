@@ -45,12 +45,14 @@ export const HERO_SLIDES = [
 // y si tampoco hay, se muestra el ícono.
 // "icon" hace referencia a los componentes exportados en components/icons.jsx.
 export const CATEGORY_SHORTCUTS = [
-  { label: "Ramos", icon: "bouquet", image: "/images/categories/ramos.webp", fallbackImage: "/images/products/p004.webp", link: "/catalogo?categoria=Variadas" },
-  { label: "Rosas", icon: "heart", image: "/images/categories/rosas.webp", fallbackImage: "/images/products/p001.webp", link: "/catalogo?categoria=Rosas" },
-  { label: "Cajas", icon: "gift", image: "/images/categories/cajas.webp", fallbackImage: "/images/products/p002.webp", link: "/catalogo?categoria=Cajas" },
-  { label: "Box", icon: "box", image: "/images/categories/box.webp", fallbackImage: "/images/hero/hero-flores.webp", link: "/catalogo?categoria=Box" },
+  { label: "Rosas", icon: "heart", image: "/images/categories/rosas.webp", fallbackImage: "/images/products/p002.webp", link: "/catalogo?categoria=Rosas" },
+  { label: "Box", icon: "box", image: "/images/categories/box.webp", fallbackImage: "/images/products/p007.webp", link: "/catalogo?categoria=Box" },
+  { label: "Arreglos", icon: "bouquet", image: "/images/categories/arreglos.webp", link: "/catalogo?categoria=Arreglos" },
+  { label: "Girasoles", icon: "sparkle", image: "/images/categories/girasoles.webp", fallbackImage: "/images/products/p016.webp", link: "/catalogo?categoria=Girasoles" },
+  { label: "Ramos variados", icon: "bouquet", image: "/images/categories/ramos.webp", fallbackImage: "/images/products/p018.webp", link: "/catalogo?categoria=Ramos%20variados" },
+  { label: "Cajas", icon: "gift", image: "/images/categories/cajas.webp", link: "/catalogo?categoria=Cajas" },
+  { label: "Combos", icon: "sparkle", image: "/images/categories/combos.webp", fallbackImage: "/images/products/p029.webp", link: "/catalogo?categoria=Combos" },
+  { label: "Condolencias", icon: "leaf", image: "/images/categories/condolencias.webp", link: "/catalogo?categoria=Condolencias" },
   { label: "Listones", icon: "ribbon", image: "/images/categories/listones.webp", link: "/catalogo?categoria=Listones" },
   { label: "Flores secas", icon: "dried", image: "/images/categories/flores-secas.webp", link: "/catalogo?categoria=Flores%20Secas" },
-  { label: "Combos", icon: "sparkle", image: "/images/categories/combos.webp", fallbackImage: "/images/products/p006.webp", link: "/catalogo?categoria=Combos" },
-  { label: "Condolencias", icon: "leaf", image: "/images/categories/condolencias.webp", link: "/catalogo?categoria=Condolencias" },
 ];

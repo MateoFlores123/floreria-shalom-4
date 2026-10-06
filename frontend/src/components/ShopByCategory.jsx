@@ -31,6 +31,7 @@ const OCCASIONS = [
   "Amistad",
   "Agradecimiento",
   "Nacimiento",
+  "Graduación",
   "Condolencias",
 ];
 

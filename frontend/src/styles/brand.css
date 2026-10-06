@@ -91,7 +91,7 @@ body { background: var(--bg); }
 
 /* Pétalos cayendo despacio */
 .ambient__petals i {
-  --x: calc(var(--p) * 14vw + 4vw);
+  --x: calc(var(--p) * 7vw + 2vw);
   position: absolute;
   top: -40px;
   left: var(--x);
@@ -101,7 +101,7 @@ body { background: var(--bg); }
   background: linear-gradient(135deg, #f2c3cf, #e39aad);
   opacity: 0;
   animation: ambient-fall calc(22s + var(--p) * 3s) linear infinite;
-  animation-delay: calc(var(--p) * -4.3s);
+  animation-delay: calc(var(--p) * -3.7s);
 }
 
 .ambient__petals i:nth-child(even) {
@@ -202,7 +202,7 @@ body { background: var(--bg); }
 .splash--out .splash__inner { transform: scale(0.7); opacity: 0; }
 
 .splash__mark {
-  width: clamp(130px, 18vw, 190px);
+  width: clamp(190px, 22vw, 270px);
   height: auto;
   animation: splash-bloom 1.1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
@@ -254,7 +254,7 @@ body { background: var(--bg); }
   left: -4%;
   top: 2%;
   width: min(38vw, 520px);
-  opacity: 0.06;
+  opacity: 0.035;
   pointer-events: none;
   animation: watermark-sway 16s ease-in-out infinite alternate;
 }
@@ -352,7 +352,7 @@ body { background: var(--bg); }
   right: -60px;
   bottom: -40px;
   width: min(480px, 70vw);
-  aspect-ratio: 367 / 388;
+  aspect-ratio: 969 / 884;
   background: url("/images/brand/logo-fs.png") center / contain no-repeat;
   opacity: 0.05;
   filter: grayscale(1) brightness(2.6);
@@ -420,7 +420,7 @@ body { background: var(--bg); }
 }
 
 @media (max-width: 640px) {
-  .ambient__petals i:nth-child(n + 5) { display: none; }
+  .ambient__petals i:nth-child(n + 9) { display: none; }
   .ambient__blob { filter: blur(50px); }
 }
 
@@ -447,3 +447,60 @@ body { background: var(--bg); }
 }
 
 .brand__name strong sup { font-size: 0.68em; }
+
+/* ---------- Productos sin precio publicado ---------- */
+.price--pending {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--brand-rose-dark);
+}
+
+.product-card__ask {
+  flex: 1;
+  justify-content: center;
+  background: var(--brand-green);
+  text-decoration: none;
+}
+
+.product-card__ask:hover { background: #25d366; }
+
+/* ---------- Producto sin foto ---------- */
+.product-card__nophoto {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 62%),
+    color-mix(in srgb, var(--tint) 16%, #fbf6ef);
+}
+
+.product-card__media .product-card__nophoto img.brand-mark {
+  position: static;
+  inset: auto;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  transform: none;
+  width: 46%;
+  max-width: 150px;
+  opacity: 0.32;
+  filter: saturate(0.7);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+}
+
+.product-card:hover .product-card__media .product-card__nophoto img.brand-mark {
+  transform: scale(1.05) rotate(-3deg);
+  opacity: 0.45;
+}
+
+.product-card__nophoto span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--tint) 70%, #3a2f2a);
+  opacity: 0.8;
+}
