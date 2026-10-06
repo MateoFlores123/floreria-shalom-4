@@ -28,7 +28,8 @@ export default function Catalogo() {
   const filtered = useMemo(() => {
     let list = allProducts;
     if (activeCategory !== "Todas") {
-      list = list.filter((p) => p.category === activeCategory);
+      // Un producto puede estar en varias categorías
+      list = list.filter((p) => (p.categories || [p.category]).includes(activeCategory));
     }
     if (activeOccasion) {
       list = list.filter((p) => (p.occasion || []).includes(activeOccasion));
