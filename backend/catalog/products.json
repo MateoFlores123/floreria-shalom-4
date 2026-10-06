@@ -4,7 +4,7 @@
     "name": "Ramo de 6 rosas",
     "categories": ["Rosas"],
     "price": 25,
-    "oldPrice": null,
+    "oldPrice": 25,
     "color": "#B23A52",
     "description": "Seis rosas en un ramo sencillo y elegante, envuelto y listo para regalar.",
     "occasion": ["Amor", "Amistad", "Cumpleaños"],
