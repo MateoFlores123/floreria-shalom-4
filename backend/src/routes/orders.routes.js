@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const { getCollection, saveCollection } = require("../db");
 const { optionalAuth, requireAuth, requireAdmin } = require("../middleware/auth");
 const { buildWhatsAppUrl } = require("../utils/whatsapp");
+const { getProducts, hasPrice } = require("../catalog");
 
 const router = express.Router();
 
@@ -37,17 +38,28 @@ router.post("/", optionalAuth, (req, res) => {
     return res.status(400).json({ error: "Selecciona un método de pago válido" });
   }
 
-  const products = getCollection("products");
-  const resolvedItems = items.map((it) => {
-    const product = products.find((p) => p.id === it.productId);
-    if (!product) throw new Error(`Producto no encontrado: ${it.productId}`);
-    return {
-      productId: product.id,
-      name: product.name,
-      price: product.price,
-      qty: Math.max(1, Number(it.qty) || 1),
-    };
-  });
+  const MAX_QTY = 50;
+  const products = getProducts();
+  const resolvedItems = [];
+  for (const it of items) {
+    const product = products.find((p) => p.id === it.productId && p.active !== false);
+    if (!product) {
+      return res.status(400).json({ error: "Uno de los productos ya no está disponible. Revisa tu carrito." });
+    }
+    // Productos sin precio publicado se coordinan por WhatsApp, no por el carrito
+    if (!hasPrice(product)) {
+      return res.status(400).json({
+        error: `"${product.name}" aún no tiene precio publicado. Consúltalo por WhatsApp.`,
+      });
+    }
+    const qty = Math.min(MAX_QTY, Math.max(1, Math.floor(Number(it.qty)) || 1));
+    const existing = resolvedItems.find((r) => r.productId === product.id);
+    if (existing) {
+      existing.qty = Math.min(MAX_QTY, existing.qty + qty);
+    } else {
+      resolvedItems.push({ productId: product.id, name: product.name, price: product.price, qty });
+    }
+  }
 
   const subtotal = resolvedItems.reduce((sum, it) => sum + it.price * it.qty, 0);
   const deliveryFee = DELIVERY_FEE;

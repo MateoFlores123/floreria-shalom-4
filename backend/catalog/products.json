@@ -1,0 +1,741 @@
+[
+  {
+    "id": "p001",
+    "name": "Ramo de 6 rosas",
+    "category": "Rosas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Seis rosas en un ramo sencillo y elegante, envuelto y listo para regalar.",
+    "occasion": [
+      "Amor",
+      "Amistad",
+      "Cumpleaños"
+    ],
+    "active": true,
+    "image": "/images/products/p001.webp",
+    "imageAlt": "Ramo de 6 rosas"
+  },
+  {
+    "id": "p002",
+    "name": "Ramo de 12 rosas",
+    "category": "Rosas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Una docena de rosas en ramo, el clásico para decir te quiero.",
+    "occasion": [
+      "Amor",
+      "Aniversario",
+      "Cumpleaños"
+    ],
+    "active": true,
+    "image": "/images/products/p002.webp",
+    "imageAlt": "Ramo de 12 rosas"
+  },
+  {
+    "id": "p003",
+    "name": "Ramo de 24 rosas",
+    "category": "Rosas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Dos docenas de rosas en un ramo amplio y vistoso.",
+    "occasion": [
+      "Amor",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p003.webp",
+    "imageAlt": "Ramo de 24 rosas"
+  },
+  {
+    "id": "p004",
+    "name": "Ramo de 36 rosas",
+    "category": "Rosas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Tres docenas de rosas en un ramo generoso para una sorpresa grande.",
+    "occasion": [
+      "Amor",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p004.webp",
+    "imageAlt": "Ramo de 36 rosas"
+  },
+  {
+    "id": "p005",
+    "name": "Ramo de 60 rosas",
+    "category": "Rosas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Sesenta rosas en un gran ramo de presencia imponente.",
+    "occasion": [
+      "Amor",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p005.webp",
+    "imageAlt": "Ramo de 60 rosas"
+  },
+  {
+    "id": "p006",
+    "name": "Box de 15 rosas",
+    "category": "Box",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Quince rosas acomodadas en box, una presentación moderna y compacta.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p006.webp",
+    "imageAlt": "Box de 15 rosas"
+  },
+  {
+    "id": "p007",
+    "name": "Box de 24 rosas",
+    "category": "Box",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Veinticuatro rosas en box, ideal para sorprender en grande.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p007.webp",
+    "imageAlt": "Box de 24 rosas"
+  },
+  {
+    "id": "p008",
+    "name": "Box con girasoles",
+    "category": "Box",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Girasoles en box, una presentación alegre y luminosa.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p008.webp",
+    "imageAlt": "Box con girasoles"
+  },
+  {
+    "id": "p009",
+    "name": "Canasta de rosas",
+    "category": "Arreglos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Rosas dispuestas en canasta, un arreglo clásico para mesa o entrega a domicilio.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p009.webp",
+    "imageAlt": "Canasta de rosas"
+  },
+  {
+    "id": "p010",
+    "name": "Canasta de rosas y girasoles",
+    "category": "Arreglos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Canasta que combina rosas y girasoles para un regalo lleno de color.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p010.webp",
+    "imageAlt": "Canasta de rosas y girasoles"
+  },
+  {
+    "id": "p011",
+    "name": "Jardín primaveral",
+    "category": "Arreglos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C77D8E",
+    "description": "Arreglo de rosas de diferentes colores que recuerda a un jardín en primavera.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento",
+      "Nacimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p011.webp",
+    "imageAlt": "Jardín primaveral"
+  },
+  {
+    "id": "p012",
+    "name": "Arreglo de rosas y girasoles",
+    "category": "Arreglos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Arreglo floral que une la elegancia de las rosas con la alegría de los girasoles.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p012.webp",
+    "imageAlt": "Arreglo de rosas y girasoles"
+  },
+  {
+    "id": "p013",
+    "name": "Girasol arreglado",
+    "category": "Arreglos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Un girasol presentado con follaje y envoltura, un detalle que alegra el día.",
+    "occasion": [
+      "Amistad",
+      "Agradecimiento",
+      "Cumpleaños"
+    ],
+    "active": true,
+    "image": "/images/products/p013.webp",
+    "imageAlt": "Girasol arreglado"
+  },
+  {
+    "id": "p014",
+    "name": "Rosa arreglada",
+    "category": "Arreglos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Una rosa presentada con follaje y envoltura, un detalle simple que dice mucho.",
+    "occasion": [
+      "Amor",
+      "Amistad",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p014.webp",
+    "imageAlt": "Rosa arreglada"
+  },
+  {
+    "id": "p015",
+    "name": "Ramo de rosas y girasoles",
+    "category": "Girasoles",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Ramo que mezcla rosas y girasoles en una combinación cálida y vistosa.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Amor"
+    ],
+    "active": true,
+    "image": "/images/products/p015.webp",
+    "imageAlt": "Ramo de rosas y girasoles"
+  },
+  {
+    "id": "p016",
+    "name": "Ramo de 6 girasoles",
+    "category": "Girasoles",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Seis girasoles en ramo, pura alegría para regalar.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p016.webp",
+    "imageAlt": "Ramo de 6 girasoles"
+  },
+  {
+    "id": "p017",
+    "name": "Ramo de 10 girasoles",
+    "category": "Girasoles",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Diez girasoles en un ramo grande y luminoso.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p017.webp",
+    "imageAlt": "Ramo de 10 girasoles"
+  },
+  {
+    "id": "p018",
+    "name": "Ramo de flores mixtas",
+    "category": "Ramos variados",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C77D8E",
+    "description": "Ramo con una selección de flores de temporada en distintos colores.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento",
+      "Nacimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p018.webp",
+    "imageAlt": "Ramo de flores mixtas"
+  },
+  {
+    "id": "p019",
+    "name": "Ramo de 5 tulipanes",
+    "category": "Ramos variados",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C9708A",
+    "description": "Cinco tulipanes en un ramo delicado y fresco.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Amistad"
+    ],
+    "active": true,
+    "image": "/images/products/p019.webp",
+    "imageAlt": "Ramo de 5 tulipanes"
+  },
+  {
+    "id": "p020",
+    "name": "Ramo de 10 tulipanes",
+    "category": "Ramos variados",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C9708A",
+    "description": "Diez tulipanes en un ramo elegante para una ocasión especial.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p020.webp",
+    "imageAlt": "Ramo de 10 tulipanes"
+  },
+  {
+    "id": "p021",
+    "name": "Ramo de gerberas mixtas",
+    "category": "Ramos variados",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C77D8E",
+    "description": "Gerberas de varios colores en un ramo alegre y juvenil.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Nacimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p021.webp",
+    "imageAlt": "Ramo de gerberas mixtas"
+  },
+  {
+    "id": "p022",
+    "name": "Caja primaveral",
+    "category": "Cajas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C77D8E",
+    "description": "Caja con flores mixtas de colores, fresca como la primavera.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Nacimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p022.webp",
+    "imageAlt": "Caja primaveral"
+  },
+  {
+    "id": "p023",
+    "name": "Caja de 2 rosas",
+    "category": "Cajas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Dos rosas presentadas en caja, un detalle pequeño y elegante.",
+    "occasion": [
+      "Amor",
+      "Amistad"
+    ],
+    "active": true,
+    "image": "/images/products/p023.webp",
+    "imageAlt": "Caja de 2 rosas"
+  },
+  {
+    "id": "p024",
+    "name": "Caja de 6 rosas",
+    "category": "Cajas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Seis rosas en caja, una presentación cuidada para regalar.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p024.webp",
+    "imageAlt": "Caja de 6 rosas"
+  },
+  {
+    "id": "p025",
+    "name": "Caja de 12 rosas",
+    "category": "Cajas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Una docena de rosas en caja, elegante de principio a fin.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p025.webp",
+    "imageAlt": "Caja de 12 rosas"
+  },
+  {
+    "id": "p026",
+    "name": "Caja de madera con flores",
+    "category": "Cajas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#A9825A",
+    "description": "Arreglo floral en caja de madera, con un estilo rústico y natural.",
+    "occasion": [
+      "Cumpleaños",
+      "Agradecimiento",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p026.webp",
+    "imageAlt": "Caja de madera con flores"
+  },
+  {
+    "id": "p027",
+    "name": "Caja de cartón decorada con flores",
+    "category": "Cajas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C77D8E",
+    "description": "Flores en caja de cartón decorada, práctica y bonita para cualquier ocasión.",
+    "occasion": [
+      "Cumpleaños",
+      "Amistad",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p027.webp",
+    "imageAlt": "Caja de cartón decorada con flores"
+  },
+  {
+    "id": "p028",
+    "name": "Combo girasoles con champán",
+    "category": "Combos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Girasoles acompañados de una botella de champán para celebrar en grande.",
+    "occasion": [
+      "Cumpleaños",
+      "Aniversario",
+      "Graduación"
+    ],
+    "active": true,
+    "image": "/images/products/p028.webp",
+    "imageAlt": "Combo girasoles con champán"
+  },
+  {
+    "id": "p029",
+    "name": "Combo ramo con globo y peluche",
+    "category": "Combos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C9708A",
+    "description": "Ramo de flores con globo y peluche, el combo completo para sorprender.",
+    "occasion": [
+      "Cumpleaños",
+      "Amor",
+      "Nacimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p029.webp",
+    "imageAlt": "Combo ramo con globo y peluche"
+  },
+  {
+    "id": "p030",
+    "name": "Arreglo de rosas y chocolates",
+    "category": "Combos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Rosas combinadas con chocolates en un solo arreglo para endulzar el día.",
+    "occasion": [
+      "Amor",
+      "Cumpleaños",
+      "Aniversario"
+    ],
+    "active": true,
+    "image": "/images/products/p030.webp",
+    "imageAlt": "Arreglo de rosas y chocolates"
+  },
+  {
+    "id": "p031",
+    "name": "Combo graduación",
+    "category": "Combos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#9A7CA8",
+    "description": "Combo floral pensado para felicitar a quien termina una etapa.",
+    "occasion": [
+      "Graduación",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p031.webp",
+    "imageAlt": "Combo graduación"
+  },
+  {
+    "id": "p032",
+    "name": "Combo cumpleaños",
+    "category": "Combos",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C9708A",
+    "description": "Combo floral para celebrar un cumpleaños con flores y detalles.",
+    "occasion": [
+      "Cumpleaños"
+    ],
+    "active": true,
+    "image": "/images/products/p032.webp",
+    "imageAlt": "Combo cumpleaños"
+  },
+  {
+    "id": "p033",
+    "name": "Lágrima fúnebre pequeña",
+    "category": "Condolencias",
+    "price": null,
+    "oldPrice": null,
+    "color": "#9AA39A",
+    "description": "Arreglo en forma de lágrima para el ataúd, tamaño pequeño.",
+    "occasion": [
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p033.webp",
+    "imageAlt": "Lágrima fúnebre pequeña"
+  },
+  {
+    "id": "p034",
+    "name": "Lágrima fúnebre mediana",
+    "category": "Condolencias",
+    "price": null,
+    "oldPrice": null,
+    "color": "#9AA39A",
+    "description": "Arreglo en forma de lágrima para el ataúd, tamaño mediano.",
+    "occasion": [
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p034.webp",
+    "imageAlt": "Lágrima fúnebre mediana"
+  },
+  {
+    "id": "p035",
+    "name": "Lágrima fúnebre grande",
+    "category": "Condolencias",
+    "price": null,
+    "oldPrice": null,
+    "color": "#9AA39A",
+    "description": "Arreglo en forma de lágrima para el ataúd, tamaño grande.",
+    "occasion": [
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p035.webp",
+    "imageAlt": "Lágrima fúnebre grande"
+  },
+  {
+    "id": "p036",
+    "name": "Corona simple",
+    "category": "Condolencias",
+    "price": null,
+    "oldPrice": null,
+    "color": "#5E7A5A",
+    "description": "Corona fúnebre sencilla para acompañar y expresar respeto.",
+    "occasion": [
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p036.webp",
+    "imageAlt": "Corona simple"
+  },
+  {
+    "id": "p037",
+    "name": "Corona de rosas blancas y follaje fino",
+    "category": "Condolencias",
+    "price": null,
+    "oldPrice": null,
+    "color": "#9AA39A",
+    "description": "Corona de rosas blancas con follaje fino, sobria y elegante.",
+    "occasion": [
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p037.webp",
+    "imageAlt": "Corona de rosas blancas y follaje fino"
+  },
+  {
+    "id": "p038",
+    "name": "Corona rellena de rosas",
+    "category": "Condolencias",
+    "price": null,
+    "oldPrice": null,
+    "color": "#9AA39A",
+    "description": "Corona completamente cubierta de rosas, un homenaje pleno.",
+    "occasion": [
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p038.webp",
+    "imageAlt": "Corona rellena de rosas"
+  },
+  {
+    "id": "p039",
+    "name": "Corona circular de liliums y rosas",
+    "category": "Condolencias",
+    "price": null,
+    "oldPrice": null,
+    "color": "#9AA39A",
+    "description": "Corona circular que combina liliums y rosas en un diseño sereno.",
+    "occasion": [
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p039.webp",
+    "imageAlt": "Corona circular de liliums y rosas"
+  },
+  {
+    "id": "p040",
+    "name": "Listones de colores",
+    "category": "Listones",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C9708A",
+    "description": "Listones en distintos colores para personalizar tu arreglo.",
+    "occasion": [
+      "Cumpleaños",
+      "Amor",
+      "Graduación"
+    ],
+    "active": true,
+    "image": "/images/products/p040.webp",
+    "imageAlt": "Listones de colores"
+  },
+  {
+    "id": "p041",
+    "name": "Listones de tela",
+    "category": "Listones",
+    "price": null,
+    "oldPrice": null,
+    "color": "#A9825A",
+    "description": "Listones de tela para dar un acabado especial a tus flores o regalos.",
+    "occasion": [
+      "Cumpleaños",
+      "Amor",
+      "Condolencias"
+    ],
+    "active": true,
+    "image": "/images/products/p041.webp",
+    "imageAlt": "Listones de tela"
+  },
+  {
+    "id": "p042",
+    "name": "Arrocillo dorado",
+    "category": "Flores Secas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#D9A441",
+    "description": "Arrocillo seco en tono dorado, ideal para decorar o complementar arreglos.",
+    "occasion": [
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p042.webp",
+    "imageAlt": "Arrocillo dorado"
+  },
+  {
+    "id": "p043",
+    "name": "Arrocillo magenta",
+    "category": "Flores Secas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#C9708A",
+    "description": "Arrocillo seco en tono magenta, un toque de color que dura.",
+    "occasion": [
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p043.webp",
+    "imageAlt": "Arrocillo magenta"
+  },
+  {
+    "id": "p044",
+    "name": "Colita de zorro",
+    "category": "Flores Secas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#A9825A",
+    "description": "Colita de zorro seca, suave y decorativa.",
+    "occasion": [
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p044.webp",
+    "imageAlt": "Colita de zorro"
+  },
+  {
+    "id": "p045",
+    "name": "Rosas secas",
+    "category": "Flores Secas",
+    "price": null,
+    "oldPrice": null,
+    "color": "#B23A52",
+    "description": "Rosas secas para decorar o regalar un recuerdo duradero.",
+    "occasion": [
+      "Amor",
+      "Agradecimiento"
+    ],
+    "active": true,
+    "image": "/images/products/p045.webp",
+    "imageAlt": "Rosas secas"
+  }
+]
