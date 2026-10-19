@@ -14,6 +14,7 @@ import Seguimiento from "./pages/Seguimiento";
 import Admin from "./pages/Admin";
 import Nosotros from "./pages/Nosotros";
 import NotFound from "./pages/NotFound";
+import Terminos from "./pages/Terminos";
 
 export default function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/seguimiento" element={<Seguimiento />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/terminos" element={<Terminos />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

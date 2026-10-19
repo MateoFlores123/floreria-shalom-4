@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { SITE } from "../data/site";
+import { useWhatsApp } from "../hooks/useWhatsApp";
 import { ArrowRightIcon, WhatsAppIcon } from "./icons";
 import { BrandMark } from "./Brand";
 
 export default function Footer() {
+  const wa = useWhatsApp();
   return (
     <footer className="site-footer">
       <section className="footer-cta">
@@ -18,7 +20,7 @@ export default function Footer() {
           </div>
           <div className="footer-cta__action">
             <a
-              href={`https://wa.me/${SITE.whatsappNumber}`}
+              href={wa.link()}
               target="_blank"
               rel="noreferrer"
               className="btn btn-outline-light"
@@ -39,7 +41,7 @@ export default function Footer() {
                 <BrandMark />
               </span>
               <span className="footer-logo__name">
-                <strong>FloreríaShalom4</strong>
+                <strong>Florería Shalom</strong>
                 <small>Flores y detalles en Arequipa</small>
               </span>
             </Link>
@@ -66,13 +68,14 @@ export default function Footer() {
               <li><Link to="/cuenta">Mi cuenta</Link></li>
               <li><Link to="/carrito">Mi carrito</Link></li>
               <li><Link to="/nosotros">Nosotros</Link></li>
+              <li><Link to="/terminos">Términos y condiciones</Link></li>
             </ul>
           </div>
 
           <div>
             <h4>Contacto</h4>
             <div className="footer-contact">
-              <strong>{SITE.whatsappDisplay}</strong>
+              <strong>{wa.display}</strong>
               <span>{SITE.address}</span>
               <span>{SITE.hours}</span>
               <a href={`mailto:${SITE.email}`}>{SITE.email}</a>

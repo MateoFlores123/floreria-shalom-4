@@ -7,13 +7,14 @@ import Reveal from "../components/Reveal";
 import HeroBloom from "../components/HeroBloom";
 import { LogoLoader, SectionOrnament } from "../components/Brand";
 import { CATEGORY_SHORTCUTS } from "../data/promos";
-import { SITE } from "../data/site";
+import { useWhatsApp } from "../hooks/useWhatsApp";
 import { MEDIA } from "../data/media";
 import { HeartIcon, WhatsAppIcon, ArrowRightIcon } from "../components/icons";
 import "../styles/home-hero.css";
 
 
 export default function Home() {
+  const wa = useWhatsApp();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -104,7 +105,7 @@ export default function Home() {
                 <span className="eyebrow eyebrow--dark">¿Tienes una idea?</span>
                 <h3>Cuéntanos para quién es y te ayudamos a convertirla en un detalle.</h3>
               </div>
-              <a href={`https://wa.me/${SITE.whatsappNumber}`} target="_blank" rel="noreferrer" className="btn btn-primary">
+              <a href={wa.link()} target="_blank" rel="noreferrer" className="btn btn-primary">
                 <WhatsAppIcon size={18} /> Hablar por WhatsApp <ArrowRightIcon size={16} />
               </a>
             </article>

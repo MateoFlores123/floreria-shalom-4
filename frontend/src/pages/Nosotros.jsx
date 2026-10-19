@@ -1,8 +1,10 @@
 import { SITE } from "../data/site";
+import { useWhatsApp } from "../hooks/useWhatsApp";
 import Reveal from "../components/Reveal";
 import { MEDIA } from "../data/media";
 
 export default function Nosotros() {
+  const wa = useWhatsApp();
   return (
     <div>
       <Reveal as="section" className="nosotros-intro">
@@ -55,7 +57,7 @@ export default function Nosotros() {
             <Reveal delay={240} className="card">
               <h3 style={{ fontSize: "1.05rem" }}>Contacto</h3>
               <p className="muted" style={{ marginTop: 8 }}>
-                {SITE.whatsappDisplay} · {SITE.email}<br />
+                {wa.display} · {SITE.email}<br />
                 {SITE.address}<br />
                 {SITE.hours}
               </p>

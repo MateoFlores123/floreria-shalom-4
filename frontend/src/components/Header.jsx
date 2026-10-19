@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { SITE } from "../data/site";
 import { CartIcon, UserIcon, WhatsAppIcon, ArrowRightIcon } from "./icons";
 import { BrandMark } from "./Brand";
+import { useWhatsApp } from "../hooks/useWhatsApp";
 import "../styles/header.css";
 
 const NAV_LINKS = [
@@ -53,7 +54,8 @@ export default function Header() {
 
   const accountTo = isLoggedIn ? "/mis-pedidos" : "/cuenta";
   const accountLabel = isLoggedIn ? `Hola, ${user?.name?.split(" ")[0] || ""}` : "Ingresar";
-  const waLink = `https://wa.me/${SITE.whatsappNumber}`;
+  const wa = useWhatsApp();
+  const waLink = wa.link();
 
   // Se repite la lista para que el desplazamiento sea continuo
   const ticker = [...ANNOUNCEMENTS, ...ANNOUNCEMENTS];
@@ -78,7 +80,7 @@ export default function Header() {
             </span>
             <span className="masthead__name">
               <strong>
-                Florería Shalom & Amor
+                Florería Shalom <em>4</em>
               </strong>
               <small>Flores y detalles en Arequipa</small>
             </span>

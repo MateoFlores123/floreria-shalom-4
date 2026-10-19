@@ -1,14 +1,12 @@
-import { SITE } from "../data/site";
+import { useWhatsApp } from "../hooks/useWhatsApp";
 import { WhatsAppIcon } from "./icons";
 
 export default function WhatsAppFloat() {
-  const message = encodeURIComponent(
-    "Hola Floreria Shalom 4! 🌸 Quisiera hacer una consulta antes de pedir."
-  );
+  const wa = useWhatsApp();
   return (
     <a
       className="wa-float"
-      href={`https://wa.me/${SITE.whatsappNumber}?text=${message}`}
+      href={wa.link("Hola Florería Shalom! 🌸 Quisiera hacer una consulta antes de pedir.")}
       target="_blank"
       rel="noreferrer"
       aria-label="Escríbenos por WhatsApp"

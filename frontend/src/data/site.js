@@ -3,8 +3,7 @@ export const SITE = {
   brand: "Floreria Shalom 4",
   owner: "Martín Mario Flores Ramos",
   city: "Arequipa, Perú",
-  whatsappDisplay: "+51 922 522 531",
-  whatsappNumber: "51922522531", // mismo número, formato internacional sin "+" (debe coincidir con backend/.env)
+  // Los números de WhatsApp y su horario están en src/data/whatsappSchedule.js
   email: "contacto@floreriashalom4.pe",
   address: "Urb. Ejemplo 123, Cercado, Arequipa",
   instagram: "https://instagram.com/floreriashalom4",

@@ -6,6 +6,9 @@ import { api } from "../api/client";
 import { AREQUIPA_DISTRICTS, DELIVERY_TIME_SLOTS } from "../data/site";
 import { PlusIcon, MinusIcon, TrashIcon, WhatsAppIcon } from "../components/icons";
 import { BrandMark } from "../components/Brand";
+import { priceLabel } from "../utils/price";
+import { TermsModal } from "../components/Terms";
+import { TERMS_HIGHLIGHTS, TERMS_VERSION } from "../data/terms";
 
 const DELIVERY_FEE = 10;
 
@@ -28,6 +31,9 @@ export default function Carrito() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
+  const [termsError, setTermsError] = useState(false);
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -43,6 +49,11 @@ export default function Carrito() {
     }
     if (!form.name || !form.phone || !form.address || !form.deliveryDate) {
       setError("Completa todos los campos obligatorios.");
+      return;
+    }
+    if (!acceptedTerms) {
+      setTermsError(true);
+      setError("Para enviar tu pedido, acepta los términos y condiciones.");
       return;
     }
 
@@ -61,6 +72,8 @@ export default function Carrito() {
         deliveryTime: form.deliveryTime,
         dedication: form.dedication,
         paymentMethod: form.paymentMethod,
+        acceptedTerms: true,
+        termsVersion: TERMS_VERSION,
       };
       const data = await api.post("/orders", payload, isLoggedIn ? { token } : {});
       setResult(data);
@@ -83,7 +96,9 @@ export default function Carrito() {
             Tu código de pedido es <strong>{result.order.code}</strong>. Guárdalo para hacer seguimiento.
           </p>
           <p className="muted" style={{ marginTop: 8 }}>
-            Total a pagar: <strong>S/ {result.order.total.toFixed(2)}</strong> ({form.paymentMethod})
+            {result.order.pendingPrices ? "Total parcial" : "Total a pagar"}:{" "}
+            <strong>S/ {result.order.total.toFixed(2)}</strong> ({form.paymentMethod})
+            {result.order.pendingPrices && <><br />Algunos productos tienen precio por confirmar: te enviamos el total final por WhatsApp.</>}
           </p>
           <p style={{ marginTop: 20 }}>
             Para confirmar tu pedido y coordinar el pago, envíanos el resumen por WhatsApp:
@@ -219,6 +234,40 @@ export default function Carrito() {
             Yape o la cuenta bancaria y tú envías la captura del pago allí mismo.
           </p>
 
+          <div className={`checkout-terms ${termsError && !acceptedTerms ? "checkout-terms--error" : ""}`}>
+            <ul className="checkout-terms__list">
+              {TERMS_HIGHLIGHTS.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <label className="checkout-terms__check">
+              <input
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => {
+                  setAcceptedTerms(e.target.checked);
+                  if (e.target.checked) setTermsError(false);
+                }}
+              />
+              <span>
+                He leído y acepto los{" "}
+                <button type="button" className="checkout-terms__link" onClick={() => setTermsOpen(true)}>
+                  términos y condiciones
+                </button>
+              </span>
+            </label>
+          </div>
+
+          <TermsModal
+            open={termsOpen}
+            onClose={() => setTermsOpen(false)}
+            onAccept={() => {
+              setAcceptedTerms(true);
+              setTermsError(false);
+              setTermsOpen(false);
+            }}
+          />
+
           <button className="btn btn-accent btn-block" type="submit" disabled={loading || items.length === 0}>
             {loading ? "Creando pedido…" : "Continuar a WhatsApp"}
           </button>
@@ -233,7 +282,7 @@ export default function Carrito() {
                 <div className="cart-line__swatch" style={{ background: item.color || "#c4406b" }} />
                 <div>
                   <p className="cart-line__name">{item.name}</p>
-                  <p className="cart-line__price">S/ {item.price.toFixed(2)}</p>
+                  <p className="cart-line__price">{priceLabel(item)}</p>
                   <div className="qty-stepper" style={{ marginTop: 6 }}>
                     <button type="button" onClick={() => updateQty(item.productId, item.qty - 1)}>
                       <MinusIcon size={14} />
@@ -262,9 +311,15 @@ export default function Carrito() {
                 <span>S/ {DELIVERY_FEE.toFixed(2)}</span>
               </div>
               <div className="cart-drawer__total">
-                <span>Total</span>
+                <span>{totals.pending > 0 ? "Total parcial" : "Total"}</span>
                 <span>S/ {(totals.subtotal + DELIVERY_FEE).toFixed(2)}</span>
               </div>
+              {totals.pending > 0 && (
+                <p className="cart-pending-note">
+                  {totals.pending === 1 ? "1 producto tiene" : `${totals.pending} productos tienen`} precio por
+                  confirmar. Al enviar tu pedido por WhatsApp te confirmamos el total final.
+                </p>
+              )}
             </div>
           )}
         </aside>
