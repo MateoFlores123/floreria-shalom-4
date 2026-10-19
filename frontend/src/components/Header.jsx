@@ -80,7 +80,7 @@ export default function Header() {
             </span>
             <span className="masthead__name">
               <strong>
-                Florería Shalom <em>4</em>
+                <span>Florería Shalom</span> <span>&amp; Amor</span>
               </strong>
               <small>Flores y detalles en Arequipa</small>
             </span>
