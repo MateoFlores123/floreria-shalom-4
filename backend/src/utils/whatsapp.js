@@ -13,16 +13,25 @@ function buildOrderMessage(order) {
   lines.push("");
   lines.push("*Productos:*");
   order.items.forEach((item) => {
-    lines.push(
-      `• ${item.qty} x ${item.name} — ${formatCurrency(item.price)} c/u = ${formatCurrency(
-        item.price * item.qty
-      )}`
-    );
+    if (item.price === null || item.price === undefined) {
+      lines.push(`• ${item.qty} x ${item.name} — precio por confirmar`);
+    } else {
+      lines.push(
+        `• ${item.qty} x ${item.name} — ${formatCurrency(item.price)} c/u = ${formatCurrency(
+          item.price * item.qty
+        )}`
+      );
+    }
   });
   lines.push("");
   lines.push(`Subtotal: ${formatCurrency(order.subtotal)}`);
   lines.push(`Delivery: ${formatCurrency(order.deliveryFee)}`);
-  lines.push(`*Total a pagar: ${formatCurrency(order.total)}*`);
+  if (order.pendingPrices) {
+    lines.push(`*Total parcial: ${formatCurrency(order.total)}*`);
+    lines.push("(Hay productos con precio por confirmar: por favor indíquenme el total final.)");
+  } else {
+    lines.push(`*Total a pagar: ${formatCurrency(order.total)}*`);
+  }
   lines.push("");
   lines.push("*Datos de entrega:*");
   lines.push(`Nombre: ${order.customer.name}`);
@@ -38,6 +47,12 @@ function buildOrderMessage(order) {
   }
   lines.push("");
   lines.push(`*Método de pago elegido:* ${order.paymentMethod}`);
+  if (order.termsAccepted) {
+    lines.push("");
+    lines.push(
+      "✅ Acepto los términos y condiciones: entiendo que las fotos son referenciales y que el arreglo se prepara con las flores disponibles, lo más parecido posible y con flores del mismo valor."
+    );
+  }
   lines.push("Quedo atento(a) para confirmar el pedido y realizar el pago por Yape o transferencia. ¡Gracias!");
 
   return lines.join("\n");

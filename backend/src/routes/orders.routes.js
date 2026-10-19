@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const { getCollection, saveCollection } = require("../db");
 const { optionalAuth, requireAuth, requireAdmin } = require("../middleware/auth");
 const { buildWhatsAppUrl } = require("../utils/whatsapp");
+const { getWhatsAppNumber } = require("../config/whatsappSchedule");
 const { getProducts, hasPrice } = require("../catalog");
 
 const router = express.Router();
@@ -13,7 +14,6 @@ const VALID_PAYMENT_STATUSES = ["Pendiente", "Pago aceptado", "Pago rechazado"];
 // para no despachar pedidos que no se han pagado (o cuyo pago fue rechazado).
 const STATUSES_REQUIRE_PAYMENT = ["En camino", "Entregado"];
 const DELIVERY_FEE = Number(process.env.DEFAULT_DELIVERY_FEE || 10);
-const OWNER_WHATSAPP_NUMBER = process.env.OWNER_WHATSAPP_NUMBER || "51922522531";
 
 function generateOrderCode() {
   const random = crypto.randomInt(1000, 9999);
@@ -23,7 +23,7 @@ function generateOrderCode() {
 
 // POST /api/orders  -> crea un pedido nuevo (invitado o usuario logueado)
 router.post("/", optionalAuth, (req, res) => {
-  const { items, customer, deliveryDate, deliveryTime, dedication, paymentMethod } = req.body;
+  const { items, customer, deliveryDate, deliveryTime, dedication, paymentMethod, acceptedTerms, termsVersion } = req.body;
 
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: "El carrito está vacío" });
@@ -33,6 +33,9 @@ router.post("/", optionalAuth, (req, res) => {
   }
   if (!deliveryDate || !deliveryTime) {
     return res.status(400).json({ error: "Selecciona fecha y hora de entrega" });
+  }
+  if (acceptedTerms !== true) {
+    return res.status(400).json({ error: "Debes aceptar los términos y condiciones para enviar tu pedido." });
   }
   if (!paymentMethod || !["Yape", "Transferencia bancaria"].includes(paymentMethod)) {
     return res.status(400).json({ error: "Selecciona un método de pago válido" });
@@ -46,22 +49,24 @@ router.post("/", optionalAuth, (req, res) => {
     if (!product) {
       return res.status(400).json({ error: "Uno de los productos ya no está disponible. Revisa tu carrito." });
     }
-    // Productos sin precio publicado se coordinan por WhatsApp, no por el carrito
-    if (!hasPrice(product)) {
-      return res.status(400).json({
-        error: `"${product.name}" aún no tiene precio publicado. Consúltalo por WhatsApp.`,
-      });
-    }
     const qty = Math.min(MAX_QTY, Math.max(1, Math.floor(Number(it.qty)) || 1));
     const existing = resolvedItems.find((r) => r.productId === product.id);
     if (existing) {
       existing.qty = Math.min(MAX_QTY, existing.qty + qty);
     } else {
-      resolvedItems.push({ productId: product.id, name: product.name, price: product.price, qty });
+      // price null = precio por confirmar por WhatsApp
+      resolvedItems.push({
+        productId: product.id,
+        name: product.name,
+        price: hasPrice(product) ? product.price : null,
+        qty,
+      });
     }
   }
 
-  const subtotal = resolvedItems.reduce((sum, it) => sum + it.price * it.qty, 0);
+  // Solo suman los productos con precio; los demás se confirman por WhatsApp
+  const subtotal = resolvedItems.reduce((sum, it) => sum + (it.price ? it.price * it.qty : 0), 0);
+  const pendingPrices = resolvedItems.some((it) => it.price === null);
   const deliveryFee = DELIVERY_FEE;
   const total = subtotal + deliveryFee;
 
@@ -70,6 +75,7 @@ router.post("/", optionalAuth, (req, res) => {
     userId: req.user ? req.user.id : null,
     items: resolvedItems,
     subtotal,
+    pendingPrices,
     deliveryFee,
     total,
     customer,
@@ -77,6 +83,10 @@ router.post("/", optionalAuth, (req, res) => {
     deliveryTime,
     dedication: dedication || "",
     paymentMethod,
+    // Registro de la aceptación de términos y condiciones
+    termsAccepted: true,
+    termsVersion: String(termsVersion || "1.0"),
+    termsAcceptedAt: new Date().toISOString(),
     status: "En preparación",
     statusHistory: [{ status: "En preparación", date: new Date().toISOString() }],
     paymentStatus: "Pendiente",
@@ -88,7 +98,8 @@ router.post("/", optionalAuth, (req, res) => {
   orders.push(order);
   saveCollection("orders", orders);
 
-  const whatsappUrl = buildWhatsAppUrl(OWNER_WHATSAPP_NUMBER, order);
+  // El número depende de la hora en Lima (ver src/config/whatsappSchedule.js)
+  const whatsappUrl = buildWhatsAppUrl(getWhatsAppNumber(), order);
 
   res.status(201).json({ order, whatsappUrl });
 });
