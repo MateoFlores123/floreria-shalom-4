@@ -25,7 +25,12 @@ function buildOrderMessage(order) {
   });
   lines.push("");
   lines.push(`Subtotal: ${formatCurrency(order.subtotal)}`);
-  lines.push(`Delivery: ${formatCurrency(order.deliveryFee)}`);
+  const zone = order.deliveryZone ? ` (${order.deliveryZone})` : "";
+  lines.push(
+    order.deliveryFee === null || order.deliveryFee === undefined
+      ? `Delivery${zone}: por confirmar`
+      : `Delivery${zone}: ${formatCurrency(order.deliveryFee)}`
+  );
   if (order.pendingPrices) {
     lines.push(`*Total parcial: ${formatCurrency(order.total)}*`);
     lines.push("(Hay productos con precio por confirmar: por favor indíquenme el total final.)");

@@ -1,10 +1,13 @@
 const express = require("express");
 const crypto = require("crypto");
-const { getCollection, saveCollection } = require("../db");
+const fs = require("fs");
+const path = require("path");
+const { getCollection, saveCollection, UPLOAD_DIR } = require("../db");
 const { optionalAuth, requireAuth, requireAdmin } = require("../middleware/auth");
 const { buildWhatsAppUrl } = require("../utils/whatsapp");
 const { getWhatsAppNumber } = require("../config/whatsappSchedule");
 const { getProducts, hasPrice } = require("../catalog");
+const { deliveryFor } = require("../delivery");
 
 const router = express.Router();
 
@@ -13,7 +16,6 @@ const VALID_PAYMENT_STATUSES = ["Pendiente", "Pago aceptado", "Pago rechazado"];
 // Estos estados de entrega requieren que el pago ya esté confirmado,
 // para no despachar pedidos que no se han pagado (o cuyo pago fue rechazado).
 const STATUSES_REQUIRE_PAYMENT = ["En camino", "Entregado"];
-const DELIVERY_FEE = Number(process.env.DEFAULT_DELIVERY_FEE || 10);
 
 function generateOrderCode() {
   const random = crypto.randomInt(1000, 9999);
@@ -33,6 +35,11 @@ router.post("/", optionalAuth, (req, res) => {
   }
   if (!deliveryDate || !deliveryTime) {
     return res.status(400).json({ error: "Selecciona fecha y hora de entrega" });
+  }
+  // El costo del delivery depende del distrito (ver catalog/delivery.json)
+  const delivery = deliveryFor(customer.district);
+  if (!delivery) {
+    return res.status(400).json({ error: "Selecciona un distrito de la lista." });
   }
   if (acceptedTerms !== true) {
     return res.status(400).json({ error: "Debes aceptar los términos y condiciones para enviar tu pedido." });
@@ -66,9 +73,9 @@ router.post("/", optionalAuth, (req, res) => {
 
   // Solo suman los productos con precio; los demás se confirman por WhatsApp
   const subtotal = resolvedItems.reduce((sum, it) => sum + (it.price ? it.price * it.qty : 0), 0);
-  const pendingPrices = resolvedItems.some((it) => it.price === null);
-  const deliveryFee = DELIVERY_FEE;
-  const total = subtotal + deliveryFee;
+  const deliveryFee = delivery.fee; // null = por confirmar
+  const pendingPrices = resolvedItems.some((it) => it.price === null) || deliveryFee === null;
+  const total = subtotal + (deliveryFee || 0);
 
   const order = {
     code: generateOrderCode(),
@@ -77,6 +84,7 @@ router.post("/", optionalAuth, (req, res) => {
     subtotal,
     pendingPrices,
     deliveryFee,
+    deliveryZone: delivery.zone,
     total,
     customer,
     deliveryDate,
@@ -172,6 +180,53 @@ router.patch("/:code/payment-status", requireAdmin, (req, res) => {
   order.paymentStatusHistory.push({ status: paymentStatus, date: new Date().toISOString() });
   saveCollection("orders", orders);
 
+  res.json(order);
+});
+
+// --- Foto de entrega (admin) ---
+// POST /api/orders/:code/delivery-photo  { image: "data:image/jpeg;base64,..." }
+const PHOTO_TYPES = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
+
+function removePhotoFile(photo) {
+  if (!photo || !photo.url) return;
+  const file = path.join(UPLOAD_DIR, path.basename(photo.url));
+  fs.promises.unlink(file).catch(() => {});
+}
+
+router.post("/:code/delivery-photo", requireAdmin, (req, res) => {
+  const orders = getCollection("orders");
+  const order = orders.find((o) => o.code === req.params.code);
+  if (!order) return res.status(404).json({ error: "Pedido no encontrado" });
+  if (order.status !== "Entregado") {
+    return res.status(400).json({ error: 'Primero marca el pedido como "Entregado" para subir la foto.' });
+  }
+
+  const match = /^data:(image\/(?:jpeg|png|webp));base64,(.+)$/.exec(req.body.image || "");
+  if (!match) return res.status(400).json({ error: "La foto debe ser JPG, PNG o WEBP." });
+  const buffer = Buffer.from(match[2], "base64");
+  if (buffer.length > MAX_PHOTO_BYTES) {
+    return res.status(400).json({ error: "La foto es muy pesada (máximo 8 MB)." });
+  }
+
+  // Nombre aleatorio: no se puede adivinar la foto de otro pedido
+  const filename = `${crypto.randomUUID()}.${PHOTO_TYPES[match[1]]}`;
+  fs.writeFileSync(path.join(UPLOAD_DIR, filename), buffer);
+
+  removePhotoFile(order.deliveryPhoto);
+  order.deliveryPhoto = { url: `/uploads/${filename}`, uploadedAt: new Date().toISOString() };
+  saveCollection("orders", orders);
+  res.json(order);
+});
+
+// DELETE /api/orders/:code/delivery-photo  -> quita la foto
+router.delete("/:code/delivery-photo", requireAdmin, (req, res) => {
+  const orders = getCollection("orders");
+  const order = orders.find((o) => o.code === req.params.code);
+  if (!order) return res.status(404).json({ error: "Pedido no encontrado" });
+  removePhotoFile(order.deliveryPhoto);
+  delete order.deliveryPhoto;
+  saveCollection("orders", orders);
   res.json(order);
 });
 

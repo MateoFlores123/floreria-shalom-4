@@ -70,7 +70,15 @@ function saveCollection(name, items) {
   writeDB(db);
 }
 
+// Carpeta de fotos de entrega (dentro del mismo volumen persistente)
+const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
+
 module.exports = {
+  DATA_DIR,
+  UPLOAD_DIR,
   readDB,
   writeDB,
   getCollection,
