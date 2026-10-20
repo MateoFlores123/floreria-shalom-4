@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import { PAYMENT_STATUSES, paymentBadgeClass } from "../utils/orderStatus";
+import { compressImage } from "../utils/compressImage";
+import DeliveryPhoto from "../components/DeliveryPhoto";
 
 const STATUSES = ["En preparación", "En camino", "Entregado"];
 const STATUSES_REQUIRE_PAYMENT = ["En camino", "Entregado"];
@@ -44,6 +46,34 @@ export default function Admin() {
   async function updateStatus(code, status) {
     try {
       await api.patch(`/orders/${code}/status`, { status }, { adminToken });
+      loadOrders(adminToken);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  // Foto de entrega: se comprime en el navegador y se sube al backend
+  const [uploading, setUploading] = useState("");
+
+  async function uploadDeliveryPhoto(code, file) {
+    if (!file) return;
+    setError("");
+    setUploading(code);
+    try {
+      const image = await compressImage(file);
+      await api.post(`/orders/${code}/delivery-photo`, { image }, { adminToken });
+      loadOrders(adminToken);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploading("");
+    }
+  }
+
+  async function removeDeliveryPhoto(code) {
+    if (!window.confirm("¿Quitar la foto de entrega de este pedido?")) return;
+    try {
+      await api.delete(`/orders/${code}/delivery-photo`, { adminToken });
       loadOrders(adminToken);
     } catch (err) {
       setError(err.message);
@@ -107,9 +137,15 @@ export default function Admin() {
                 <p className="muted" style={{ fontSize: "0.85rem" }}>
                   Entrega: {order.deliveryDate} · {order.deliveryTime}
                 </p>
+                {order.deliveryZone && (
+                  <p className="muted" style={{ fontSize: "0.85rem" }}>
+                    Delivery {order.deliveryZone}:{" "}
+                    {order.deliveryFee == null ? "por cotizar" : `S/ ${order.deliveryFee.toFixed(2)}`}
+                  </p>
+                )}
               </div>
               <div style={{ textAlign: "right" }}>
-                <p style={{ fontWeight: 700 }}>S/ {order.total.toFixed(2)}</p>
+                <p style={{ fontWeight: 700 }}>S/ {order.total.toFixed(2)}{order.pendingPrices && " (parcial)"}</p>
                 <p className="muted" style={{ fontSize: "0.85rem" }}>{order.paymentMethod}</p>
                 <span className={`badge ${paymentBadgeClass(order.paymentStatus)}`} style={{ marginTop: 6 }}>
                   {order.paymentStatus || "Pendiente"}
@@ -119,7 +155,7 @@ export default function Admin() {
 
             <ul style={{ marginTop: 12, paddingLeft: 18, fontSize: "0.9rem", color: "var(--ink-soft)" }}>
               {order.items.map((it) => (
-                <li key={it.productId}>{it.qty} x {it.name}</li>
+                <li key={it.productId}>{it.qty} x {it.name}{it.price == null && " — precio por confirmar"}</li>
               ))}
             </ul>
 
@@ -170,6 +206,40 @@ export default function Admin() {
                 </p>
               )}
             </div>
+
+            {order.status === "Entregado" && (
+              <div className="admin-photo">
+                <p className="muted" style={{ fontSize: "0.8rem", fontWeight: 600, marginBottom: 8 }}>
+                  Foto de entrega {order.deliveryPhoto ? "(el cliente ya la puede ver)" : "(opcional, la verá el cliente)"}
+                </p>
+                <DeliveryPhoto photo={order.deliveryPhoto} />
+                <div className="admin-photo__actions">
+                  <label className={`btn ${order.deliveryPhoto ? "btn-outline" : "btn-primary"}`}>
+                    {uploading === order.code
+                      ? "Subiendo foto…"
+                      : order.deliveryPhoto
+                        ? "Cambiar foto"
+                        : "Subir foto de entrega"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      hidden
+                      disabled={uploading === order.code}
+                      onChange={(e) => {
+                        uploadDeliveryPhoto(order.code, e.target.files[0]);
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
+                  {order.deliveryPhoto && (
+                    <button type="button" className="btn btn-ghost" onClick={() => removeDeliveryPhoto(order.code)}>
+                      Quitar foto
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         ))}
 

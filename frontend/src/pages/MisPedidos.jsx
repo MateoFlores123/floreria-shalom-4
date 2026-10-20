@@ -3,6 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/client";
 import { paymentBadgeClass } from "../utils/orderStatus";
+import DeliveryPhoto from "../components/DeliveryPhoto";
 
 export default function MisPedidos() {
   const { isLoggedIn, loading: authLoading, token, user, logout } = useAuth();
@@ -62,8 +63,9 @@ export default function MisPedidos() {
                 <li key={it.productId}>{it.qty} x {it.name}</li>
               ))}
             </ul>
+            <DeliveryPhoto photo={order.deliveryPhoto} />
             <div style={{ marginTop: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <strong>Total: S/ {order.total.toFixed(2)}</strong>
+              <strong>{order.pendingPrices ? "Total parcial" : "Total"}: S/ {order.total.toFixed(2)}</strong>
               <Link className="btn btn-ghost" to={`/seguimiento?code=${order.code}&phone=${order.customer.phone}`}>
                 Ver seguimiento →
               </Link>

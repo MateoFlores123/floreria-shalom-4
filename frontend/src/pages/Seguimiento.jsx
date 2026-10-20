@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 import StatusStepper from "../components/StatusStepper";
 import { paymentBadgeClass } from "../utils/orderStatus";
+import DeliveryPhoto from "../components/DeliveryPhoto";
 
 export default function Seguimiento() {
   const [searchParams] = useSearchParams();
@@ -90,12 +91,14 @@ export default function Seguimiento() {
 
           <StatusStepper status={order.status} />
 
+          <DeliveryPhoto photo={order.deliveryPhoto} />
+
           <ul style={{ paddingLeft: 18, fontSize: "0.92rem", color: "var(--ink-soft)" }}>
             {order.items.map((it) => (
               <li key={it.productId}>{it.qty} x {it.name}</li>
             ))}
           </ul>
-          <p style={{ marginTop: 10, fontWeight: 700 }}>Total: S/ {order.total.toFixed(2)}</p>
+          <p style={{ marginTop: 10, fontWeight: 700 }}>{order.pendingPrices ? "Total parcial" : "Total"}: S/ {order.total.toFixed(2)}</p>
         </div>
       )}
     </div>

@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/client";
-import { AREQUIPA_DISTRICTS, DELIVERY_TIME_SLOTS } from "../data/site";
+import { DELIVERY_TIME_SLOTS } from "../data/site";
 import { PlusIcon, MinusIcon, TrashIcon, WhatsAppIcon } from "../components/icons";
 import { BrandMark } from "../components/Brand";
 import { priceLabel } from "../utils/price";
 import { TermsModal } from "../components/Terms";
 import { TERMS_HIGHLIGHTS, TERMS_VERSION } from "../data/terms";
 
-const DELIVERY_FEE = 10;
 
 export default function Carrito() {
   const { items, totals, updateQty, removeItem, clearCart } = useCart();
@@ -20,7 +19,7 @@ export default function Carrito() {
   const [form, setForm] = useState({
     name: user?.name || "",
     phone: user?.phone || "",
-    district: AREQUIPA_DISTRICTS[0],
+    district: "",
     address: "",
     reference: "",
     deliveryDate: "",
@@ -32,6 +31,22 @@ export default function Carrito() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  // Zonas de delivery (vienen del backend: catalog/delivery.json)
+  const [zones, setZones] = useState([]);
+
+  useEffect(() => {
+    api
+      .get("/delivery")
+      .then((data) => setZones(data.zones || []))
+      .catch(() => setZones([]));
+  }, []);
+
+  // Zona y costo del distrito elegido
+  const delivery = useMemo(() => {
+    const zone = zones.find((z) => z.districts.includes(form.district));
+    if (!zone) return null;
+    return { zone: zone.name, fee: typeof zone.fee === "number" ? zone.fee : null };
+  }, [zones, form.district]);
   const [termsOpen, setTermsOpen] = useState(false);
   const [termsError, setTermsError] = useState(false);
 
@@ -47,7 +62,7 @@ export default function Carrito() {
       setError("Tu carrito está vacío.");
       return;
     }
-    if (!form.name || !form.phone || !form.address || !form.deliveryDate) {
+    if (!form.name || !form.phone || !form.district || !form.address || !form.deliveryDate) {
       setError("Completa todos los campos obligatorios.");
       return;
     }
@@ -150,11 +165,21 @@ export default function Carrito() {
           <div className="field-row">
             <div className="field">
               <label htmlFor="district">Distrito *</label>
-              <select id="district" value={form.district} onChange={(e) => update("district", e.target.value)}>
-                {AREQUIPA_DISTRICTS.map((d) => (
-                  <option key={d} value={d}>{d}</option>
+              <select id="district" value={form.district} onChange={(e) => update("district", e.target.value)} required>
+                <option value="" disabled>Elige tu distrito</option>
+                {zones.map((z) => (
+                  <optgroup key={z.id} label={z.fee == null ? `${z.name} · delivery por confirmar` : `${z.name} · delivery S/ ${z.fee.toFixed(2)}`}>
+                    {z.districts.map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
+              {delivery && (
+                <p className="delivery-hint">
+                  {delivery.zone} · {delivery.fee == null ? "el delivery se cotiza por WhatsApp" : `delivery S/ ${delivery.fee.toFixed(2)}`}
+                </p>
+              )}
             </div>
             <div className="field">
               <label htmlFor="address">Dirección exacta *</label>
@@ -307,12 +332,16 @@ export default function Carrito() {
                 <span>S/ {totals.subtotal.toFixed(2)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-                <span className="muted">Delivery en Arequipa</span>
-                <span>S/ {DELIVERY_FEE.toFixed(2)}</span>
+                <span className="muted">
+                  Delivery{delivery ? ` · ${delivery.zone}` : ""}
+                </span>
+                <span>
+                  {!delivery ? "Elige tu distrito" : delivery.fee == null ? "Por confirmar" : `S/ ${delivery.fee.toFixed(2)}`}
+                </span>
               </div>
               <div className="cart-drawer__total">
-                <span>{totals.pending > 0 ? "Total parcial" : "Total"}</span>
-                <span>S/ {(totals.subtotal + DELIVERY_FEE).toFixed(2)}</span>
+                <span>{totals.pending > 0 || !delivery || delivery.fee == null ? "Total parcial" : "Total"}</span>
+                <span>S/ {(totals.subtotal + (delivery?.fee || 0)).toFixed(2)}</span>
               </div>
               {totals.pending > 0 && (
                 <p className="cart-pending-note">

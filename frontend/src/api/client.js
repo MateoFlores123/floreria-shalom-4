@@ -29,4 +29,13 @@ export const api = {
   get: (path, opts) => request(path, { ...opts, method: "GET" }),
   post: (path, body, opts) => request(path, { ...opts, method: "POST", body }),
   patch: (path, body, opts) => request(path, { ...opts, method: "PATCH", body }),
+  delete: (path, opts) => request(path, { ...opts, method: "DELETE" }),
 };
+
+// Dirección completa de un archivo servido por el backend (ej. fotos de entrega).
+// VITE_API_URL termina en /api; las fotos viven en /uploads del mismo servidor.
+export function fileUrl(path) {
+  if (!path) return "";
+  if (/^https?:\/\//.test(path)) return path;
+  return `${String(BASE_URL || "").replace(/\/api\/?$/, "")}${path}`;
+}
