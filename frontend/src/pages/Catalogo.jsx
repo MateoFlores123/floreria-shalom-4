@@ -4,6 +4,7 @@ import { api } from "../api/client";
 import ProductCard from "../components/ProductCard";
 import FloralOrnament from "../components/FloralOrnament";
 import { LogoLoader } from "../components/Brand";
+import CustomIdeaBanner from "../components/CustomIdeaBanner";
 
 export default function Catalogo() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -63,6 +64,8 @@ export default function Catalogo() {
         <h1>Catálogo</h1>
         <p>Ramos, cajas y arreglos disponibles para entrega el mismo día en Arequipa.</p>
       </div>
+
+      <CustomIdeaBanner />
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", margin: "28px 0", alignItems: "center" }}>
         <div className="field" style={{ marginBottom: 0, minWidth: 220 }}>

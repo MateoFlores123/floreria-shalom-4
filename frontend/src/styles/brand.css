@@ -573,3 +573,119 @@ body { background: var(--bg); }
 }
 
 .admin-photo__actions label { cursor: pointer; }
+
+/* ---------- "¿Tienes tu propia idea?" en el catálogo ---------- */
+.idea-banner {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 18px 32px;
+  margin-top: 24px;
+  padding: 26px 30px;
+  border-radius: 28px 28px 28px 8px;
+  background: linear-gradient(120deg, var(--brand-green-deep), var(--brand-green));
+  color: #fff;
+  box-shadow: 0 24px 50px -30px rgba(31, 47, 32, 0.8);
+  animation: idea-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+}
+
+.idea-banner__mark {
+  position: absolute;
+  z-index: -1;
+  right: -30px;
+  top: 50%;
+  width: 210px;
+  opacity: 0.1;
+  filter: grayscale(1) brightness(3);
+  transform: translateY(-50%) rotate(-8deg);
+  pointer-events: none;
+}
+
+.idea-banner__text { flex: 1; min-width: 0; }
+
+.idea-banner h2 {
+  margin: 0 0 6px;
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+  font-weight: 500;
+  line-height: 1.05;
+  color: #fff;
+}
+
+.idea-banner p {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #d9e2d6;
+}
+
+.idea-banner__btn {
+  position: relative;
+  overflow: hidden;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brand-green-deep);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, color 0.3s ease;
+}
+
+.idea-banner__btn svg:first-child { color: #25d366; transition: color 0.3s ease; }
+.idea-banner__btn svg:last-child { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* Brillo que cruza el botón cada cierto tiempo */
+.idea-banner__btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(246, 225, 230, 0.9) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: idea-shine 4.5s ease-in-out 1.2s infinite;
+}
+
+.idea-banner__btn:hover {
+  transform: translateY(-2px);
+  background: #25d366;
+  color: #fff;
+}
+
+.idea-banner__btn:hover svg:first-child { color: #fff; }
+.idea-banner__btn:hover svg:last-child { transform: translateX(4px); }
+
+.idea-banner__btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+@keyframes idea-in {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+@keyframes idea-shine {
+  0%, 70% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@media (max-width: 720px) {
+  .idea-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px;
+  }
+  .idea-banner__btn { width: 100%; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .idea-banner,
+  .idea-banner__btn::after { animation: none; }
+}
