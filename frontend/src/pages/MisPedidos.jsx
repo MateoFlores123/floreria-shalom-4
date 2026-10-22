@@ -64,6 +64,7 @@ export default function MisPedidos() {
               ))}
             </ul>
             <DeliveryPhoto photo={order.deliveryPhoto} />
+            <DeliveryPhoto photo={order.referencePhoto} title="Diseño de referencia" alt="Foto de referencia de tu arreglo" />
             <div style={{ marginTop: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <strong>{order.pendingPrices ? "Total parcial" : "Total"}: S/ {order.total.toFixed(2)}</strong>
               <Link className="btn btn-ghost" to={`/seguimiento?code=${order.code}&phone=${order.customer.phone}`}>

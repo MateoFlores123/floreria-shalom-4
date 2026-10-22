@@ -92,6 +92,7 @@ export default function Seguimiento() {
           <StatusStepper status={order.status} />
 
           <DeliveryPhoto photo={order.deliveryPhoto} />
+          <DeliveryPhoto photo={order.referencePhoto} title="Diseño de referencia" alt="Foto de referencia de tu arreglo" />
 
           <ul style={{ paddingLeft: 18, fontSize: "0.92rem", color: "var(--ink-soft)" }}>
             {order.items.map((it) => (

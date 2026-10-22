@@ -3,6 +3,11 @@ import { api } from "../api/client";
 import { PAYMENT_STATUSES, paymentBadgeClass } from "../utils/orderStatus";
 import { compressImage } from "../utils/compressImage";
 import DeliveryPhoto from "../components/DeliveryPhoto";
+import CustomOrderForm from "../components/CustomOrderForm";
+import CustomerMessage from "../components/CustomerMessage";
+import { paymentRequestMessage, paymentConfirmedMessage } from "../utils/customerMessages";
+import { paymentInfoIncomplete } from "../data/payment";
+import "../styles/admin.css";
 
 const STATUSES = ["En preparación", "En camino", "Entregado"];
 const STATUSES_REQUIRE_PAYMENT = ["En camino", "Entregado"];
@@ -15,6 +20,9 @@ export default function Admin() {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // Formulario de pedido personalizado y mensaje abierto para el cliente
+  const [showCustomForm, setShowCustomForm] = useState(false);
+  const [message, setMessage] = useState(null); // { code, kind: "pago" | "confirmado" }
 
   function loadOrders(token) {
     setLoading(true);
@@ -84,6 +92,8 @@ export default function Admin() {
     try {
       await api.patch(`/orders/${code}/payment-status`, { paymentStatus }, { adminToken });
       loadOrders(adminToken);
+      // Al marcar PAGADO se prepara el mensaje para avisarle al cliente
+      if (paymentStatus === "Pago aceptado") setMessage({ code, kind: "confirmado" });
     } catch (err) {
       setError(err.message);
     }
@@ -123,6 +133,35 @@ export default function Admin() {
       </div>
 
       {error && <div className="form-error">{error}</div>}
+
+      {paymentInfoIncomplete() && (
+        <div className="admin-warning">
+          ⚠ Faltan tus datos de Yape y de transferencia para los mensajes al cliente. Complétalos en{" "}
+          <code>frontend/src/data/payment.js</code>.
+        </div>
+      )}
+
+      {!showCustomForm && (
+        <div className="admin-toolbar">
+          <button type="button" className="btn btn-primary" onClick={() => setShowCustomForm(true)}>
+            ＋ Registrar pedido personalizado
+          </button>
+        </div>
+      )}
+
+      {showCustomForm && (
+        <CustomOrderForm
+          adminToken={adminToken}
+          onCancel={() => setShowCustomForm(false)}
+          onCreated={(order) => {
+            setShowCustomForm(false);
+            setMessage({ code: order.code, kind: "pago" });
+            loadOrders(adminToken);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
+      )}
+
       {loading && <p className="muted">Cargando pedidos…</p>}
 
       <div className="stack" style={{ marginTop: 20 }}>
@@ -130,7 +169,10 @@ export default function Admin() {
           <div className="card" key={order.code}>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
               <div>
-                <p style={{ fontWeight: 700, color: "var(--green-dark)" }}>{order.code}</p>
+                <p style={{ fontWeight: 700, color: "var(--green-dark)" }}>
+                  {order.code}
+                  {order.source === "personalizado" && <span className="order-tag">Personalizado</span>}
+                </p>
                 <p className="muted" style={{ fontSize: "0.85rem" }}>
                   {order.customer.name} · {order.customer.phone} · {order.customer.district}
                 </p>
@@ -206,6 +248,33 @@ export default function Admin() {
                 </p>
               )}
             </div>
+
+            {order.referencePhoto && (
+              <DeliveryPhoto photo={order.referencePhoto} title="Diseño de referencia" alt="Foto de referencia del arreglo" />
+            )}
+
+            {/* Mensajes listos para enviar al cliente por WhatsApp */}
+            <div className="order-msg-buttons">
+              {order.paymentStatus !== "Pago aceptado" && (
+                <button type="button" className="btn btn-outline" onClick={() => setMessage({ code: order.code, kind: "pago" })}>
+                  Mensaje con datos de pago
+                </button>
+              )}
+              {order.paymentStatus === "Pago aceptado" && (
+                <button type="button" className="btn btn-outline" onClick={() => setMessage({ code: order.code, kind: "confirmado" })}>
+                  Mensaje de pago confirmado
+                </button>
+              )}
+            </div>
+            {message?.code === order.code && (
+              <CustomerMessage
+                key={`${order.code}-${message.kind}-${order.paymentStatus}`}
+                title={message.kind === "pago" ? "Mensaje con el pedido y los datos de pago" : "Mensaje: pago confirmado y seguimiento"}
+                phone={order.customer.phone}
+                text={message.kind === "pago" ? paymentRequestMessage(order) : paymentConfirmedMessage(order)}
+                onClose={() => setMessage(null)}
+              />
+            )}
 
             {order.status === "Entregado" && (
               <div className="admin-photo">
