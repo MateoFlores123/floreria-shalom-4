@@ -23,6 +23,34 @@ function generateOrderCode() {
   return `FH4-${stamp}${random}`;
 }
 
+
+// --- Fotos (entrega y diseño de referencia) ---
+const PHOTO_TYPES = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
+
+// Guarda una foto en base64 y devuelve { url, uploadedAt }. Lanza un error con mensaje claro.
+function savePhoto(dataUrl) {
+  const found = /^data:(image\/(?:jpeg|png|webp));base64,(.+)$/.exec(dataUrl || "");
+  if (!found) throw new Error("La foto debe ser JPG, PNG o WEBP.");
+  const buffer = Buffer.from(found[2], "base64");
+  if (buffer.length > MAX_PHOTO_BYTES) throw new Error("La foto es muy pesada (máximo 8 MB).");
+  // Nombre aleatorio: no se puede adivinar la foto de otro pedido
+  const filename = `${crypto.randomUUID()}.${PHOTO_TYPES[found[1]]}`;
+  fs.writeFileSync(path.join(UPLOAD_DIR, filename), buffer);
+  return { url: `/uploads/${filename}`, uploadedAt: new Date().toISOString() };
+}
+
+function removePhotoFile(photo) {
+  if (!photo || !photo.url) return;
+  const file = path.join(UPLOAD_DIR, path.basename(photo.url));
+  fs.promises.unlink(file).catch(() => {});
+}
+
+// Últimos 9 dígitos del celular (ignora espacios, guiones y el 51)
+function phoneKey(phone) {
+  return String(phone || "").replace(/\D/g, "").slice(-9);
+}
+
 // POST /api/orders  -> crea un pedido nuevo (invitado o usuario logueado)
 router.post("/", optionalAuth, (req, res) => {
   const { items, customer, deliveryDate, deliveryTime, dedication, paymentMethod, acceptedTerms, termsVersion } = req.body;
@@ -120,7 +148,7 @@ router.get("/track", (req, res) => {
   }
   const orders = getCollection("orders");
   const order = orders.find(
-    (o) => o.code.toLowerCase() === String(code).toLowerCase() && o.customer.phone === phone
+    (o) => o.code.toLowerCase() === String(code).toLowerCase().trim() && phoneKey(o.customer.phone) === phoneKey(phone)
   );
   if (!order) {
     return res.status(404).json({ error: "No encontramos un pedido con esos datos" });
@@ -130,7 +158,13 @@ router.get("/track", (req, res) => {
 
 // GET /api/orders/mine  -> pedidos del usuario logueado
 router.get("/mine", requireAuth, (req, res) => {
-  const orders = getCollection("orders").filter((o) => o.userId === req.user.id);
+  // Incluye los pedidos hechos con su cuenta y los que la florería registró con su celular
+  const users = getCollection("users");
+  const me = users.find((u) => u.id === req.user.id);
+  const myPhone = me ? phoneKey(me.phone) : "";
+  const orders = getCollection("orders").filter(
+    (o) => o.userId === req.user.id || (myPhone && phoneKey(o.customer && o.customer.phone) === myPhone)
+  );
   res.json(orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
 });
 
@@ -185,14 +219,6 @@ router.patch("/:code/payment-status", requireAdmin, (req, res) => {
 
 // --- Foto de entrega (admin) ---
 // POST /api/orders/:code/delivery-photo  { image: "data:image/jpeg;base64,..." }
-const PHOTO_TYPES = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
-const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
-
-function removePhotoFile(photo) {
-  if (!photo || !photo.url) return;
-  const file = path.join(UPLOAD_DIR, path.basename(photo.url));
-  fs.promises.unlink(file).catch(() => {});
-}
 
 router.post("/:code/delivery-photo", requireAdmin, (req, res) => {
   const orders = getCollection("orders");
@@ -202,19 +228,15 @@ router.post("/:code/delivery-photo", requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Primero marca el pedido como "Entregado" para subir la foto.' });
   }
 
-  const match = /^data:(image\/(?:jpeg|png|webp));base64,(.+)$/.exec(req.body.image || "");
-  if (!match) return res.status(400).json({ error: "La foto debe ser JPG, PNG o WEBP." });
-  const buffer = Buffer.from(match[2], "base64");
-  if (buffer.length > MAX_PHOTO_BYTES) {
-    return res.status(400).json({ error: "La foto es muy pesada (máximo 8 MB)." });
+  let photo;
+  try {
+    photo = savePhoto(req.body.image);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
   }
 
-  // Nombre aleatorio: no se puede adivinar la foto de otro pedido
-  const filename = `${crypto.randomUUID()}.${PHOTO_TYPES[match[1]]}`;
-  fs.writeFileSync(path.join(UPLOAD_DIR, filename), buffer);
-
   removePhotoFile(order.deliveryPhoto);
-  order.deliveryPhoto = { url: `/uploads/${filename}`, uploadedAt: new Date().toISOString() };
+  order.deliveryPhoto = photo;
   saveCollection("orders", orders);
   res.json(order);
 });
@@ -228,6 +250,77 @@ router.delete("/:code/delivery-photo", requireAdmin, (req, res) => {
   delete order.deliveryPhoto;
   saveCollection("orders", orders);
   res.json(order);
+});
+
+// --- Pedido personalizado (admin) ---
+// Para ideas que llegan por WhatsApp: la florería registra el pedido con la foto de referencia.
+// POST /api/orders/custom
+router.post("/custom", requireAdmin, (req, res) => {
+  const { description, price, deliveryFee, customer, deliveryDate, deliveryTime, dedication, paymentMethod, image } =
+    req.body;
+
+  if (!description || !String(description).trim()) {
+    return res.status(400).json({ error: "Describe el arreglo (en qué consiste el pedido)." });
+  }
+  const priceNum = Number(price);
+  if (!Number.isFinite(priceNum) || priceNum <= 0) {
+    return res.status(400).json({ error: "Ingresa el precio del arreglo." });
+  }
+  const feeNum = Number(deliveryFee || 0);
+  if (!Number.isFinite(feeNum) || feeNum < 0) {
+    return res.status(400).json({ error: "El costo de delivery no es válido." });
+  }
+  if (!customer || !customer.name || !customer.phone || !customer.address) {
+    return res.status(400).json({ error: "Completa nombre, celular y dirección del cliente." });
+  }
+  if (phoneKey(customer.phone).length < 9) {
+    return res.status(400).json({ error: "El celular del cliente debe tener 9 dígitos." });
+  }
+
+  let referencePhoto = null;
+  if (image) {
+    try {
+      referencePhoto = savePhoto(image);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
+
+  const zone = customer.district ? deliveryFor(customer.district) : null;
+  const now = new Date().toISOString();
+  const order = {
+    code: generateOrderCode(),
+    source: "personalizado",
+    userId: null,
+    items: [{ productId: "personalizado", name: String(description).trim(), price: priceNum, qty: 1 }],
+    subtotal: priceNum,
+    pendingPrices: false,
+    deliveryFee: feeNum,
+    deliveryZone: zone ? zone.zone : null,
+    total: priceNum + feeNum,
+    customer: {
+      name: String(customer.name).trim(),
+      phone: String(customer.phone).trim(),
+      district: customer.district || "",
+      address: String(customer.address).trim(),
+      reference: customer.reference || "",
+    },
+    deliveryDate: deliveryDate || "",
+    deliveryTime: deliveryTime || "",
+    dedication: dedication || "",
+    paymentMethod: ["Yape", "Transferencia bancaria"].includes(paymentMethod) ? paymentMethod : "Yape",
+    referencePhoto,
+    status: "En preparación",
+    statusHistory: [{ status: "En preparación", date: now }],
+    paymentStatus: "Pendiente",
+    paymentStatusHistory: [{ status: "Pendiente", date: now }],
+    createdAt: now,
+  };
+
+  const orders = getCollection("orders");
+  orders.push(order);
+  saveCollection("orders", orders);
+  res.status(201).json(order);
 });
 
 module.exports = router;
