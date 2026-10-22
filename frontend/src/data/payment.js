@@ -8,14 +8,14 @@ export const BUSINESS_NAME = "Florería Shalom & Amor";
 
 export const PAYMENT_INFO = {
   yape: {
-    number: "COMPLETAR", // ej. "922 522 531"
-    holder: "COMPLETAR", // nombre que aparece en Yape
+    number: "922 522 531", // ej. "922 522 531"
+    holder: "MATEO FLORES", // nombre que aparece en Yape
   },
   transfer: {
-    bank: "COMPLETAR", // ej. "BCP"
-    account: "COMPLETAR", // número de cuenta
-    cci: "COMPLETAR", // código interbancario (opcional: deja "" si no quieres mostrarlo)
-    holder: "COMPLETAR", // titular de la cuenta
+    bank: "BCP", // ej. "BCP"
+    account: "0000000000000", // número de cuenta
+    cci: "", // código interbancario (opcional: deja "" si no quieres mostrarlo)
+    holder: "MATEO FLORES", // titular de la cuenta
   },
 };
 
