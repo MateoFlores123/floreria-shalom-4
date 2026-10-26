@@ -1,0 +1,42 @@
+{
+  "origin": "Calle Piérola 520, Cercado, Arequipa",
+  "note": "Costos de delivery por zona, según la distancia desde la florería. Cambia los montos en 'fee' (soles). Para mover un distrito de zona, cámbialo de lista. 'fee': null = se cotiza por WhatsApp.",
+  "zones": [
+    {
+      "id": "z1",
+      "name": "Zona 1 · Centro",
+      "fee": 7,
+      "districts": ["Cercado", "Selva Alegre"]
+    },
+    {
+      "id": "z2",
+      "name": "Zona 2 · Cerca",
+      "fee": 10,
+      "districts": ["Yanahuara", "Miraflores", "Mariano Melgar", "Alto Selva Alegre", "José Luis Bustamante y Rivero"]
+    },
+    {
+      "id": "z3",
+      "name": "Zona 3 · Intermedia",
+      "fee": 13,
+      "districts": ["Cayma", "Sachaca", "Paucarpata", "Jacobo Hunter"]
+    },
+    {
+      "id": "z4",
+      "name": "Zona 4 · Lejana",
+      "fee": 17,
+      "districts": ["Cerro Colorado", "Socabaya", "Tiabaya", "Sabandía"]
+    },
+    {
+      "id": "z5",
+      "name": "Zona 5 · Muy lejana",
+      "fee": 22,
+      "districts": ["Characato", "Mollebaya", "Uchumayo", "Yura"]
+    },
+    {
+      "id": "otro",
+      "name": "Otra zona",
+      "fee": null,
+      "districts": ["Otro distrito (coordinar por WhatsApp)"]
+    }
+  ]
+}

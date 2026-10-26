@@ -1,0 +1,19 @@
+{
+  "name": "floreria-shalom-api",
+  "version": "1.0.0",
+  "description": "API de Florer\u00eda Shalom en Cloudflare Workers + D1",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init:local": "wrangler d1 execute floreria-shalom-db --local --file=schema.sql",
+    "db:init": "wrangler d1 execute floreria-shalom-db --remote --file=schema.sql"
+  },
+  "dependencies": {
+    "hono": "^4.13.14"
+  },
+  "devDependencies": {
+    "wrangler": "^4.153.0"
+  },
+  "private": true,
+  "type": "module"
+}

@@ -1,0 +1,4 @@
+# Copia este archivo como ".dev.vars" para probar en tu computadora (npm run dev).
+# En Cloudflare estos valores se guardan como secretos (ver GUIA_CLOUDFLARE.md).
+ADMIN_PASSWORD=pon-una-contraseña-larga
+JWT_SECRET=pon-un-texto-largo-y-secreto

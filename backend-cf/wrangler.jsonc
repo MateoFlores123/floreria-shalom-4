@@ -1,0 +1,31 @@
+{
+	// ==========================================================
+	//  Configuración del backend en Cloudflare Workers
+	// ==========================================================
+	"name": "floreria-shalom-api",
+	"main": "src/index.js",
+	"compatibility_date": "2026-10-01",
+	// Base de datos D1 (pedidos, cuentas y fotos).
+	// Después de crearla con "npx wrangler d1 create floreria-shalom-db",
+	// pega aquí el "database_id" que te muestra la terminal.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "floreria-shalom-db",
+			"database_id": "e15c2950-b795-44f2-90d6-a66aaaa32453"
+		},
+		{
+			"binding": "y",
+			"database_name": "floreria-shalom-db",
+			"database_id": "e15c2950-b795-44f2-90d6-a66aaaa32453",
+			"remote": true
+		}
+	],
+	// Usuario del panel admin (la contraseña va como secreto, ver GUIA)
+	"vars": {
+		"ADMIN_USER": "belen"
+	},
+	"observability": {
+		"enabled": true
+	}
+}
