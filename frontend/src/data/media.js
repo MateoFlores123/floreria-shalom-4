@@ -4,7 +4,7 @@ export const MEDIA = {
   brand: {
     logo: "/images/brand/logo.png",
     // Monograma FS con tulipán (fondo transparente)
-    mark: "/images/brand/logo-fs.png",
+    mark: "/images/brand/logo-fs.webp",
   },
   hero: {
     sinComplicaciones: "/images/hero/hero-sincomplicaciones.webp",

@@ -45,12 +45,14 @@ body { background: var(--bg); }
     var(--bg);
 }
 
+/* Manchas de color: degradado radial (se ve desenfocado sin usar "filter: blur",
+   que es muy pesado para el celular cuando se anima) */
 .ambient__blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.55;
+  opacity: 0.6;
   will-change: transform;
+  background: radial-gradient(closest-side, var(--blob) 0%, color-mix(in srgb, var(--blob) 55%, transparent) 45%, transparent 100%);
 }
 
 .ambient__blob--rose {
@@ -58,7 +60,7 @@ body { background: var(--bg); }
   height: 46vmax;
   left: -14vmax;
   top: 30vh;
-  background: #f4d3db;
+  --blob: #f4d3db;
   animation: ambient-drift-a 38s ease-in-out infinite alternate;
 }
 
@@ -67,7 +69,7 @@ body { background: var(--bg); }
   height: 40vmax;
   right: -12vmax;
   top: 55vh;
-  background: #dfe7d6;
+  --blob: #dfe7d6;
   animation: ambient-drift-b 44s ease-in-out infinite alternate;
 }
 
@@ -76,8 +78,8 @@ body { background: var(--bg); }
   height: 34vmax;
   right: 18vw;
   top: -14vmax;
-  background: #f8e2cf;
-  opacity: 0.6;
+  --blob: #f8e2cf;
+  opacity: 0.65;
   animation: ambient-drift-c 52s ease-in-out infinite alternate;
 }
 
@@ -353,7 +355,7 @@ body { background: var(--bg); }
   bottom: -40px;
   width: min(480px, 70vw);
   aspect-ratio: 969 / 884;
-  background: url("/images/brand/logo-fs.png") center / contain no-repeat;
+  background: url("/images/brand/logo-fs.webp") center / contain no-repeat;
   opacity: 0.05;
   filter: grayscale(1) brightness(2.6);
   transform: rotate(-8deg);
@@ -421,7 +423,6 @@ body { background: var(--bg); }
 
 @media (max-width: 640px) {
   .ambient__petals i:nth-child(n + 9) { display: none; }
-  .ambient__blob { filter: blur(50px); }
 }
 
 /* ---------- Secciones que se veían frías ---------- */

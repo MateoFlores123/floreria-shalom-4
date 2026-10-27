@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { api } from "../api/client";
 import ProductCard from "../components/ProductCard";
 import ShopByCategory from "../components/ShopByCategory";
 import Reveal from "../components/Reveal";
 import HeroBloom from "../components/HeroBloom";
+import { useProducts } from "../hooks/useProducts";
 import { LogoLoader, SectionOrnament } from "../components/Brand";
 import { CATEGORY_SHORTCUTS } from "../data/promos";
 import { useWhatsApp } from "../hooks/useWhatsApp";
@@ -15,16 +14,8 @@ import "../styles/home-hero.css";
 
 export default function Home() {
   const wa = useWhatsApp();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api
-      .get("/products")
-      .then((data) => setProducts(data.filter((p) => p.active !== false)))
-      .catch(() => setProducts([]))
-      .finally(() => setLoading(false));
-  }, []);
+  // Catálogo compartido: si ya se cargó, aparece al instante
+  const { products, loading } = useProducts();
 
   // Siete piezas para que la grilla tenga ritmo y no parezca una fila de tarjetas repetidas.
   const featured = products.slice(0, 7);

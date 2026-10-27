@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { api } from "../api/client";
+import { useProducts, categoriesOf } from "../hooks/useProducts";
 import ProductCard from "../components/ProductCard";
 import FloralOrnament from "../components/FloralOrnament";
 import { LogoLoader } from "../components/Brand";
@@ -8,23 +8,13 @@ import CustomIdeaBanner from "../components/CustomIdeaBanner";
 
 export default function Catalogo() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [allProducts, setAllProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Catálogo compartido (se descarga una vez y queda guardado mientras navegas)
+  const { products: allProducts, loading } = useProducts();
+  const categories = useMemo(() => categoriesOf(allProducts), [allProducts]);
   const [search, setSearch] = useState("");
 
   const activeCategory = searchParams.get("categoria") || "Todas";
   const activeOccasion = searchParams.get("ocasion") || "";
-
-  useEffect(() => {
-    setLoading(true);
-    api
-      .get("/products")
-      .then(setAllProducts)
-      .catch(() => setAllProducts([]))
-      .finally(() => setLoading(false));
-    api.get("/products/categories").then(setCategories).catch(() => setCategories([]));
-  }, []);
 
   const filtered = useMemo(() => {
     let list = allProducts;
