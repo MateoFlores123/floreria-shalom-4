@@ -6,7 +6,7 @@ export const SITE = {
   // Los números de WhatsApp y su horario están en src/data/whatsappSchedule.js
   email: "contacto@floreriashalom4.pe",
   address: "Calle Piérola 520, Cercado, Arequipa",
-  instagram: "https://instagram.com/floreriashalom4",
+  instagram: "https://www.instagram.com/floreriashalom.aqp/",
   facebook: "https://facebook.com/floreriashalom4",
   hours: "Lunes a domingo, 8:00 a.m. – 9:00 p.m.",
 };
