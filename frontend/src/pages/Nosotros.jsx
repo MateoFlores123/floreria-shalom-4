@@ -1,9 +1,16 @@
 import { SITE } from "../data/site";
 import { useWhatsApp } from "../hooks/useWhatsApp";
 import Reveal from "../components/Reveal";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { MEDIA } from "../data/media";
 
 export default function Nosotros() {
+  usePageMeta({
+    title: "Nosotros · Florería en el Cercado de Arequipa",
+    description:
+      "Conoce Florería Shalom & Amor, en Calle Piérola 520, Cercado de Arequipa. Flores hechas a mano y entregadas con cuidado en toda la ciudad.",
+    path: "/nosotros",
+  });
   const wa = useWhatsApp();
   return (
     <div>

@@ -1,0 +1,9 @@
+# Florería Shalom & Amor
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /carrito
+Disallow: /cuenta
+Disallow: /mis-pedidos
+
+Sitemap: https://www.floreria-shalom.com/sitemap.xml

@@ -4,9 +4,16 @@ import { useProducts, categoriesOf } from "../hooks/useProducts";
 import ProductCard from "../components/ProductCard";
 import FloralOrnament from "../components/FloralOrnament";
 import { LogoLoader } from "../components/Brand";
+import { usePageMeta } from "../hooks/usePageMeta";
 import CustomIdeaBanner from "../components/CustomIdeaBanner";
 
 export default function Catalogo() {
+  usePageMeta({
+    title: "Catálogo de flores y arreglos en Arequipa",
+    description:
+      "Ramos de rosas, girasoles y tulipanes, box, cajas, combos, coronas y flores secas con entrega a domicilio en Arequipa. Elige tu arreglo y pídelo en línea.",
+    path: "/catalogo",
+  });
   const [searchParams, setSearchParams] = useSearchParams();
   // Catálogo compartido (se descarga una vez y queda guardado mientras navegas)
   const { products: allProducts, loading } = useProducts();

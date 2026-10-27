@@ -690,3 +690,60 @@ body { background: var(--bg); }
   .idea-banner,
   .idea-banner__btn::after { animation: none; }
 }
+
+/* ---------- Sección "Florería en Arequipa" (portada) ---------- */
+.local-seo__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.local-seo h2 {
+  margin: 10px 0 14px;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1;
+}
+
+.local-seo p { color: var(--ink-soft); line-height: 1.7; max-width: 60ch; }
+
+.local-seo__address {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+  padding-left: 14px;
+  border-left: 3px solid var(--brand-rose);
+}
+
+.local-seo__address strong { color: var(--brand-green); }
+
+.local-seo h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--brand-green);
+}
+
+.local-seo__districts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.local-seo__districts li {
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+@media (max-width: 800px) {
+  .local-seo__inner { grid-template-columns: 1fr; gap: 24px; }
+}

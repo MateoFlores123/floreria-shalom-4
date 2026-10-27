@@ -3,9 +3,15 @@ import { useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 import StatusStepper from "../components/StatusStepper";
 import { paymentBadgeClass } from "../utils/orderStatus";
+import { usePageMeta } from "../hooks/usePageMeta";
 import DeliveryPhoto from "../components/DeliveryPhoto";
 
 export default function Seguimiento() {
+  usePageMeta({
+    title: "Sigue tu pedido",
+    description: "Consulta el estado de tu pedido de flores con tu código y tu celular.",
+    path: "/seguimiento",
+  });
   const [searchParams] = useSearchParams();
   const [code, setCode] = useState(searchParams.get("code") || "");
   const [phone, setPhone] = useState(searchParams.get("phone") || "");

@@ -9,10 +9,25 @@ import { CATEGORY_SHORTCUTS } from "../data/promos";
 import { useWhatsApp } from "../hooks/useWhatsApp";
 import { MEDIA } from "../data/media";
 import { HeartIcon, WhatsAppIcon, ArrowRightIcon } from "../components/icons";
+import { usePageMeta } from "../hooks/usePageMeta";
+import { SITE } from "../data/site";
 import "../styles/home-hero.css";
 
 
+// Distritos de reparto (los costos están en backend-cf/catalog/delivery.json)
+const DELIVERY_DISTRICTS = [
+  "Cercado", "Yanahuara", "Cayma", "Cerro Colorado", "José Luis Bustamante y Rivero",
+  "Paucarpata", "Sachaca", "Miraflores", "Mariano Melgar", "Alto Selva Alegre",
+  "Socabaya", "Jacobo Hunter", "Tiabaya", "Sabandía", "Characato",
+];
+
 export default function Home() {
+  usePageMeta({
+    title: "Florería en Arequipa · Flores a domicilio | Florería Shalom & Amor",
+    description:
+      "Florería en Arequipa con delivery el mismo día. Ramos de rosas y girasoles, box, arreglos, combos y coronas. Pide en línea o por WhatsApp y paga con Yape o transferencia.",
+    path: "/",
+  });
   const wa = useWhatsApp();
   // Catálogo compartido: si ya se cargó, aparece al instante
   const { products, loading } = useProducts();
@@ -117,6 +132,37 @@ export default function Home() {
             <div><span>01</span><h3>Elige</h3><p>Encuentra un arreglo o filtra por ocasión.</p></div>
             <div><span>02</span><h3>Personaliza</h3><p>Completa entrega, horario y dedicatoria.</p></div>
             <div><span>03</span><h3>Confirma</h3><p>Recibe el resumen y coordina el pago por WhatsApp.</p></div>
+          </div>
+        </div>
+      </Reveal>
+
+      {/* Texto local: quién somos, dónde estamos y a qué distritos llegamos (útil para clientes y para Google) */}
+      <Reveal as="section" className="section local-seo">
+        <div className="container local-seo__inner">
+          <div>
+            <span className="eyebrow eyebrow--dark">Florería en Arequipa</span>
+            <h2>Flores a domicilio en toda Arequipa</h2>
+            <p>
+              Somos una florería en el Cercado de Arequipa. Preparamos ramos de rosas y girasoles,
+              box, cajas, arreglos florales, combos con chocolates o globos, y coronas y lágrimas
+              para condolencias. Hacemos delivery el mismo día y puedes pagar con Yape o
+              transferencia.
+            </p>
+            <p className="local-seo__address">
+              <strong>{SITE.address}</strong>
+              <span>{SITE.hours}</span>
+            </p>
+          </div>
+          <div>
+            <h3>Distritos donde entregamos</h3>
+            <ul className="local-seo__districts">
+              {DELIVERY_DISTRICTS.map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ul>
+            <Link to="/catalogo" className="btn btn-primary" style={{ marginTop: 18 }}>
+              Ver el catálogo <ArrowRightIcon size={16} />
+            </Link>
           </div>
         </div>
       </Reveal>
