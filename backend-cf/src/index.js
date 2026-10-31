@@ -15,6 +15,17 @@ const app = new Hono();
 
 app.use("/api/*", cors());
 
+// El catálogo y las zonas solo cambian cuando publicas (npm run deploy):
+// el navegador puede guardarlos 2 minutos y así la página carga al instante.
+app.use("/api/products/*", async (c, next) => {
+  await next();
+  if (c.req.method === "GET" && c.res.status === 200) c.header("Cache-Control", "public, max-age=120");
+});
+app.use("/api/products", async (c, next) => {
+  await next();
+  if (c.req.method === "GET" && c.res.status === 200) c.header("Cache-Control", "public, max-age=120");
+});
+
 app.get("/", (c) => c.text("API de Florería Shalom 🌸 — prueba /api/health"));
 
 app.get("/api/health", (c) => c.json({ ok: true, name: "Floreria Shalom API (Cloudflare)" }));
@@ -22,6 +33,7 @@ app.get("/api/health", (c) => c.json({ ok: true, name: "Floreria Shalom API (Clo
 // Zonas y costos de delivery (los usa el checkout)
 app.get("/api/delivery", (c) => {
   const { origin, zones } = getDeliveryConfig();
+  c.header("Cache-Control", "public, max-age=120");
   return c.json({ origin, zones });
 });
 
