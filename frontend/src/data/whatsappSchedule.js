@@ -1,21 +1,25 @@
 // ==========================================================
-//  HORARIO DE ATENCIÓN POR WHATSAPP (pedidos del carrito)
-//  La hora se calcula siempre en Perú (America/Lima).
-//  Gemelo en el frontend: frontend/src/data/whatsappSchedule.js
+//  HORARIO DE ATENCIÓN POR WHATSAPP (botones de la web)
+//  La página cambia sola de número según la hora de Perú,
+//  aunque el cliente tenga otra hora en su celular.
+//
+//  Gemelo en el backend (pedidos del carrito):
+//    backend/src/config/whatsappSchedule.js
+//  Si cambias algo aquí, cámbialo igual allá.
 // ==========================================================
 
 const TIMEZONE = "America/Lima";
 
-// Cada tramo: desde (incluido) — hasta (sin incluir), formato 24 h.
-const SCHEDULE = [
+// Cada tramo: desde (incluido) — hasta (sin incluir), en formato 24 h.
+export const WHATSAPP_SCHEDULE = [
   // Mañana: hasta la 1 p. m. (y la hora de 1 a 2 p. m. también va aquí)
-  { from: "00:00", to: "14:00", number: "51922522531" },
+  { from: "00:00", to: "14:00", number: "51922522531", display: "+51 922 522 531" },
   // Tarde: de 2 p. m. a 7 p. m.
-  { from: "14:00", to: "19:00", number: "51924752969" },
+  { from: "14:00", to: "19:00", number: "51924752969", display: "+51 924 752 969" },
 ];
 
 // Para cualquier hora fuera de la lista (después de las 7 p. m.)
-const DEFAULT_NUMBER = "51922522531";
+export const DEFAULT_WHATSAPP = { number: "51922522531", display: "+51 922 522 531" };
 
 function toMinutes(hhmm) {
   const [h, m] = hhmm.split(":").map(Number);
@@ -40,9 +44,13 @@ function isWeekendInLima(date) {
   return day === "Sat" || day === "Sun";
 }
 
-export function getWhatsAppNumber(date = new Date()) {
-  if (isWeekendInLima(date)) return SCHEDULE[1].number;
+export function getCurrentWhatsApp(date = new Date()) {
+  if (isWeekendInLima(date)) return WHATSAPP_SCHEDULE[1];
   const now = limaMinutes(date);
-  const slot = SCHEDULE.find((s) => now >= toMinutes(s.from) && now < toMinutes(s.to));
-  return slot ? slot.number : DEFAULT_NUMBER;
+  const slot = WHATSAPP_SCHEDULE.find((s) => now >= toMinutes(s.from) && now < toMinutes(s.to));
+  return slot || DEFAULT_WHATSAPP;
+}
+
+export function whatsappLink(number, text) {
+  return `https://wa.me/${number}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 }
