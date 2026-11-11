@@ -6,6 +6,7 @@ import FloralOrnament from "../components/FloralOrnament";
 import { LogoLoader } from "../components/Brand";
 import { usePageMeta } from "../hooks/usePageMeta";
 import CustomIdeaBanner from "../components/CustomIdeaBanner";
+import SeasonalPriceNotice from "../components/SeasonalPriceNotice";
 
 export default function Catalogo() {
   usePageMeta({
@@ -61,7 +62,7 @@ export default function Catalogo() {
         <h1>Catálogo</h1>
         <p>Ramos, cajas y arreglos disponibles para entrega el mismo día en Arequipa.</p>
       </div>
-
+      <SeasonalPriceNotice />
       <CustomIdeaBanner />
 
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", margin: "28px 0", alignItems: "center" }}>

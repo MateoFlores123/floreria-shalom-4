@@ -34,24 +34,15 @@ function limaMinutes(date) {
   return h * 60 + m;
 }
 
+// Sábado y domingo: siempre el mismo número (el de la tarde)
+function isWeekendInLima(date) {
+  const day = new Intl.DateTimeFormat("en-US", { timeZone: TIMEZONE, weekday: "short" }).format(date);
+  return day === "Sat" || day === "Sun";
+}
+
 export function getWhatsAppNumber(date = new Date()) {
-  // Obtener día de la semana en horario de Perú
-  const day = new Intl.DateTimeFormat("en-US", {
-    timeZone: TIMEZONE,
-    weekday: "short",
-  }).format(date);
-
-  // Sábado y domingo: usar siempre este número
-  if (day === "Sat" || day === "Sun") {
-    return "51924752969";
-  }
-
-  // De lunes a viernes: aplicar horario habitual
+  if (isWeekendInLima(date)) return SCHEDULE[1].number;
   const now = limaMinutes(date);
-
-  const slot = SCHEDULE.find(
-    (s) => now >= toMinutes(s.from) && now < toMinutes(s.to)
-  );
-
+  const slot = SCHEDULE.find((s) => now >= toMinutes(s.from) && now < toMinutes(s.to));
   return slot ? slot.number : DEFAULT_NUMBER;
 }
