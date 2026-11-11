@@ -5,31 +5,31 @@
     {
       "id": "z1",
       "name": "Zona 1 · Centro",
-      "fee": 7,
+      "fee": 10,
       "districts": ["Cercado", "Selva Alegre"]
     },
     {
       "id": "z2",
       "name": "Zona 2 · Cerca",
-      "fee": 10,
+      "fee": 15,
       "districts": ["Yanahuara", "Miraflores", "Mariano Melgar", "Alto Selva Alegre", "José Luis Bustamante y Rivero"]
     },
     {
       "id": "z3",
       "name": "Zona 3 · Intermedia",
-      "fee": 13,
+      "fee": 20,
       "districts": ["Cayma", "Sachaca", "Paucarpata", "Jacobo Hunter"]
     },
     {
       "id": "z4",
       "name": "Zona 4 · Lejana",
-      "fee": 17,
+      "fee": 22,
       "districts": ["Cerro Colorado", "Socabaya", "Tiabaya", "Sabandía"]
     },
     {
       "id": "z5",
       "name": "Zona 5 · Muy lejana",
-      "fee": 22,
+      "fee": 25,
       "districts": ["Characato", "Mollebaya", "Uchumayo", "Yura"]
     },
     {
